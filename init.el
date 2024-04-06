@@ -1,18 +1,16 @@
-;; Setup use-package.
-;; Uncomment only needed for Emacs 28 and prior.
-;; May need to check that the current versions of packages support your version of Emacs.
+;; Setup use-package. Mostly needed in non-linux and old versions of Emacs.
 
 (require 'package)
-;; (add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
+(add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
-;; (unless (package-installed-p 'use-package)
-;;   (package-refresh-contents)
-;;   (package-install 'use-package))
-;; (eval-and-compile
-;;   (setq use-package-always-ensure t
-;;         use-package-expand-minimally t))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(eval-and-compile
+  (setq use-package-always-ensure t
+        use-package-expand-minimally t))
 
 
 ;; Setting the theme first
