@@ -1,10 +1,10 @@
-;; Setup package archives
+;; Package Repositories
 (require 'package)
 (add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
-;; Setup use-package for easy packge installation
+;; use-package
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -12,19 +12,19 @@
   (setq use-package-always-ensure t
         use-package-expand-minimally t))
 
-;; Configuring the Emacs backups
+;; Emacs backups
 (setq backup-directory-alist `(("." . "~/.saves")))
 (setq backup-by-copying t)
 (setq delete-old-versions t)
 
-;; Some basic Emacs configuration
+;; Standard Emacs configuration
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
 (tool-bar-mode 0)
 (column-number-mode 1)
 (show-paren-mode 1)
 
-;; Dashboard setup
+;; Dashboard
 (setq inhibit-splash-screen t)
 (use-package dashboard
   :ensure t
@@ -32,12 +32,15 @@
   (dashboard-setup-startup-hook)
   (setq dashboard-center-content t))
 
-;; Sets the dictionary
+;; Dictionary
 ;; Need to install en_AU in hunspell with sudo pacman -S hunspell-en_AU
 (setq ispell-dictionary "en_AU")
 
-;; Git setup
+;; Git
 (use-package magit :ensure t)
+
+;; Coding
+(global-whitespace-mode 1)
 
 ;; Theme
 (use-package gruber-darker-theme :ensure t)
@@ -48,7 +51,8 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(gruber-darker))
  '(custom-safe-themes
-   '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default)))
+ '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default))
+ '(package-selected-packages '(magit gruber-darker-theme dashboard)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
