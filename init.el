@@ -24,6 +24,17 @@
 (column-number-mode 1)
 (show-paren-mode 1)
 
+;; ido
+(use-package ido-completing-read+ :ensure t)
+(use-package smex :ensure t)
+
+(ido-mode 1)
+(ido-everywhere 1)
+(ido-ubiquitous-mode 1)
+
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
 ;; Dashboard
 (setq inhibit-splash-screen t)
 (use-package dashboard
@@ -33,14 +44,39 @@
   (setq dashboard-center-content t))
 
 ;; Dictionary
-;; Need to install en_AU in hunspell with sudo pacman -S hunspell-en_AU
+;; Need to install en_AU in hunspell with sudo pacman -S hunspell-en_AU (Depending on OS)
 (setq ispell-dictionary "en_AU")
 
 ;; Git
+;; NOTE: May need to manually upgrade seq
 (use-package magit :ensure t)
 
+;; Org
+(use-package org :ensure t)
+
 ;; Coding
+(use-package yasnippet :ensure t)
+(yas-global-mode 1)
+
+(use-package company :ensure t)
+(global-company-mode)
+
+(require 'compile)
+
+(use-package move-text :ensure t)
+(global-set-key (kbd "M-p") 'move-text-up)
+(global-set-key (kbd "M-n") 'move-text-down)
+
+;; Appearance
+(add-to-list 'default-frame-alist '(font . "IosevkaTerm Nerd Font Propo-18"))
+(set-face-attribute 'default t :font "IosevkaTerm Nerd Font Propo-18")
+
 (global-whitespace-mode 1)
+(setq-default whitespace-style
+	      '(face spaces empty tabs newline trailing space-mark tab-mark))
+
+(global-display-line-numbers-mode 1)
+(setq display-line-numbers-type 'relative)
 
 ;; Theme
 (use-package gruber-darker-theme :ensure t)
@@ -51,7 +87,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(gruber-darker))
  '(custom-safe-themes
- '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default))
+   '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default))
  '(package-selected-packages '(magit gruber-darker-theme dashboard)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
