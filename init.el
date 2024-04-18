@@ -54,18 +54,35 @@
 ;; Org
 (use-package org :ensure t)
 
-;; Coding
-(use-package yasnippet :ensure t)
-(yas-global-mode 1)
+;; Editing
+(use-package multiple-cursors
+  :ensure t
+  :config
+  (global-set-key (kbd "C-s-c C-s-c") 'mc/edit-lines)
+  (global-set-key (kbd "C->")         'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<")         'mc/mark-previous-like-this)
+  (global-set-key (kbd "C-c C-<")     'mc/mark-all-like-this))
 
-(use-package company :ensure t)
-(global-company-mode)
+(use-package move-text
+  :ensure t
+  :config
+  (global-set-key (kbd "M-p") 'move-text-up)
+  (global-set-key (kbd "M-n") 'move-text-down))
 
+;; Completion
+(use-package yasnippet
+  :ensure t
+  :config
+  (setq yas-snippet-dirs '("./.emacs.snippets/"))
+  (yas-global-mode 1))
+
+(use-package company
+  :ensure t
+  :config
+  (global-company-mode))
+
+;; Code
 (require 'compile)
-
-(use-package move-text :ensure t)
-(global-set-key (kbd "M-p") 'move-text-up)
-(global-set-key (kbd "M-n") 'move-text-down)
 
 ;; Appearance
 (add-to-list 'default-frame-alist '(font . "IosevkaTerm Nerd Font Propo-18"))
