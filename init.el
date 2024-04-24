@@ -10,7 +10,8 @@
   (package-install 'use-package))
 (eval-and-compile
   (setq use-package-always-ensure t
-        use-package-expand-minimally t))
+        use-package-expand-minimally t)
+  (setq-default visual-fill-column-center-text t))
 
 ;; Emacs backups
 (setq backup-directory-alist `(("." . "~/.saves")))
@@ -43,9 +44,23 @@
   (dashboard-setup-startup-hook)
   (setq dashboard-center-content t))
 
-;; Dictionary
+;; Spell Check
 ;; Need to install en_AU in hunspell with sudo pacman -S hunspell-en_AU (Depending on OS)
+(setq flyspell-issue-message-flag nil)
 (setq ispell-dictionary "en_AU")
+
+(defun flyspell-toggle ()
+      "Turn Flyspell on if it is off, or off if it is on.  When turning on, it uses `flyspell-on-for-buffer-type' so code-vs-text is handled appropriately."
+      (interactive)
+      (if (symbol-value flyspell-mode)
+	  (progn ; flyspell is on, turn it off
+	    (message "Flyspell off")
+	    (flyspell-mode -1))
+	  ; else - flyspell is off, turn it on
+	(flyspell-mode 1)
+	(flyspell-buffer)))
+
+(global-set-key (kbd "C-'") 'flyspell-toggle)
 
 ;; Git
 ;; NOTE: May need to manually upgrade seq
@@ -73,7 +88,7 @@
 (use-package yasnippet
   :ensure t
   :config
-  (setq yas-snippet-dirs '("./.emacs.snippets/"))
+  (setq yas-snippet-dirs '("~/.config/emacs/.emacs.snippets/"))
   (yas-global-mode 1))
 
 (use-package company
