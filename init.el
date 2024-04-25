@@ -100,8 +100,8 @@
 (require 'compile)
 
 ;; Appearance
-(add-to-list 'default-frame-alist '(font . "IosevkaTerm Nerd Font Propo-18"))
-(set-face-attribute 'default t :font "IosevkaTerm Nerd Font Propo-18")
+(add-to-list 'default-frame-alist '(font . "IosevkaTerm Nerd Font-18"))
+(set-face-attribute 'default t :font "IosevkaTerm Nerd Font-18")
 
 (global-whitespace-mode 1)
 (setq-default whitespace-style
