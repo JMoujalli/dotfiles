@@ -18,13 +18,6 @@
 (setq backup-by-copying t)
 (setq delete-old-versions t)
 
-;; Standard Emacs configuration
-(menu-bar-mode 0)
-(scroll-bar-mode 0)
-(tool-bar-mode 0)
-(column-number-mode 1)
-(show-paren-mode 1)
-
 ;; ido
 (use-package ido-completing-read+ :ensure t)
 (use-package smex :ensure t)
@@ -63,7 +56,6 @@
 (global-set-key (kbd "C-'") 'flyspell-toggle)
 
 ;; Git
-;; NOTE: May need to manually upgrade seq
 (use-package magit :ensure t)
 
 ;; Org
@@ -88,7 +80,7 @@
 (use-package yasnippet
   :ensure t
   :config
-  (setq yas-snippet-dirs '("~/.config/emacs/.emacs.snippets/"))
+  (setq yas-snippet-dirs '(".emacs.snippets/"))
   (yas-global-mode 1))
 
 (use-package company
