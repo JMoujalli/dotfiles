@@ -37,6 +37,34 @@
   (dashboard-setup-startup-hook)
   (setq dashboard-center-content t))
 
+;; Elfeed for RSS feeds and YouTube videos.
+(use-package elfeed
+  :ensure t
+  :defer t
+  :config
+  (global-set-key (kbd "C-x w") 'elfeed)
+  (setq-default elfeed-search-filter "@1-year-old"))
+
+(use-package elfeed-org
+  :ensure t
+  :config
+  (elfeed-org)
+  (setq rmh-elfeed-org-files (list "~/.config/emacs/elfeed.org")))
+
+(defun mpv-play-url (url &rest args)
+  "Play the given URL in MPV."
+  (interactive)
+  (start-process "my-process" nil "mpv"
+                        "--speed=1.0"
+                        "--pause"
+                        "--cache=yes"
+                        "demuxer-max-bytes=5000M"
+                        "demuxer-max-back-bytes=3000M" url))
+
+(setq browse-url-handlers
+      '(("youtu\\.?be.*\\.xml" . browse-url-default-browser)  ; Open YouTube RSS feeds in the browser
+        ("youtu\\.?be" . mpv-play-url)))                      ; Use mpv-play-url for other YouTube URLs
+
 ;; Spell Check
 ;; Need to install en_AU in hunspell with sudo pacman -S hunspell-en_AU (Depending on OS)
 (setq flyspell-issue-message-flag nil)
