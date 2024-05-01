@@ -81,13 +81,20 @@
 	(flyspell-mode 1)
 	(flyspell-buffer)))
 
-(global-set-key (kbd "C-'") 'flyspell-toggle)
+(keymap-global-set "C-'" 'flyspell-toggle)
+
+(add-hook 'org-mode-hook
+          (lambda ()
+                  (keymap-unset org-mode-map "C-'")))
 
 ;; Git
 (use-package magit :ensure t)
 
 ;; Org
 (use-package org :ensure t)
+
+;; (use-package org-roam
+;;   :ensure t)
 
 ;; Editing
 (use-package multiple-cursors
@@ -118,6 +125,8 @@
 
 ;; Code
 (require 'compile)
+
+(keymap-global-set "C-z" 'shell)
 
 ;; Appearance
 (add-to-list 'default-frame-alist '(font . "IosevkaTerm Nerd Font-18"))
