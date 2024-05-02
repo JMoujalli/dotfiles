@@ -1,0 +1,16 @@
+* About
+
+My dotfiles that I generally use with Arch linux (Maybe Debian).
+
+* Installation
+
+Clone into the home directory: ~/dotfiles
+
+Make symlinks using:
+
+#+BEGIN_SRC
+  stow .
+#+END_SRC
+
+* Warning
+These files are a work in progress and may not necessarily work for your system at any given time. 
