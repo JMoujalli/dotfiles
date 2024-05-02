@@ -49,7 +49,7 @@
   :ensure t
   :config
   (elfeed-org)
-  (setq rmh-elfeed-org-files (list "~/.config/emacs/elfeed.org")))
+  (setq rmh-elfeed-org-files (list "~/elfeed.org")))
 
 (defun mpv-play-url (url &rest args)
   "Play the given URL in MPV."
