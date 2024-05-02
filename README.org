@@ -4,13 +4,23 @@ My dotfiles that I generally use with Arch linux (Maybe Debian).
 
 * Installation
 
-Clone into the home directory: ~/dotfiles
+Clone the repository into: ~/dotfiles
 
 Make symlinks using:
 
 #+BEGIN_SRC
-  stow .
+  cd ~/dotfiles
+  stow -nvSt ~ i3 emacs
+  stow -vSt ~ i3 emacs
+#+END_SRC
+
+To remove the symlinks:
+
+#+BEGIN_SRC
+  cd ~/dotfiles
+  stow -nvDt ~ i3 emacs
+  stow -vDt ~ i3 emacs
 #+END_SRC
 
 * Warning
-These files are a work in progress and may not necessarily work for your system at any given time. 
+These files are a work in progress and may not necessarily work for your system at any given time.
