@@ -71,7 +71,7 @@
 (setq ispell-dictionary "en_AU")
 
 (defun flyspell-toggle ()
-      "Turn Flyspell on if it is off, or off if it is on.  When turning on, it uses `flyspell-on-for-buffer-type' so code-vs-text is handled appropriately."
+      "Turn Flyspell on if it is off, or off if it is on. No distinction is made between code and text."
       (interactive)
       (if (symbol-value flyspell-mode)
 	  (progn ; flyspell is on, turn it off
@@ -81,7 +81,7 @@
 	(flyspell-mode 1)
 	(flyspell-buffer)))
 
-(keymap-global-set "C-'" 'flyspell-toggle)
+(global-set-key (kbd "C-'") 'flyspell-toggle)
 
 (add-hook 'org-mode-hook
           (lambda ()
