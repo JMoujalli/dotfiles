@@ -164,8 +164,9 @@ bar {
 	tray_output none
 }
 
-# All workspaces begin in tabbed mode.
+# i3 setup commands.
 workspace_layout tabbed
+focus_follows_mouse no
 
 # Launching into emacs.
 exec --no-startup-id emacs
