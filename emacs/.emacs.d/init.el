@@ -19,23 +19,23 @@
 (setq delete-old-versions t)
 
 ;; ido
-(use-package ido-completing-read+ :ensure t)
-(use-package smex :ensure t)
+;; (use-package ido-completing-read+ :ensure t)
+;; (use-package smex :ensure t)
 
-(ido-mode 1)
-(ido-everywhere 1)
-(ido-ubiquitous-mode 1)
+;; (ido-mode 1)
+;; (ido-everywhere 1)
+;; (ido-ubiquitous-mode 1)
 
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+;; (global-set-key (kbd "M-x") 'smex)
+;; (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;; Dashboard
 (setq inhibit-splash-screen t)
-(use-package dashboard
-  :ensure t
-  :config
-  (dashboard-setup-startup-hook)
-  (setq dashboard-center-content t))
+;; (use-package dashboard
+;;   :ensure t
+;;   :config
+;;   (dashboard-setup-startup-hook)
+;;   (setq dashboard-center-content t))
 
 ;; Elfeed for RSS feeds and YouTube videos.
 (use-package elfeed
@@ -123,14 +123,57 @@
   :config
   (global-company-mode))
 
+(use-package helm
+  :ensure t
+  :config
+  (helm-mode)
+  (global-set-key (kbd "M-x") #'helm-M-x)
+  (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+  (global-set-key (kbd "C-x C-f") #'helm-find-files)
+  (global-set-key (kbd "C-x b") #'helm-mini))
+
+(use-package helm-xref :ensure t)
+(require' helm-xref)
+
 ;; Code
 (require 'compile)
 
-(keymap-global-set "C-z" 'shell)
+;; (use-package lsp-mode
+;;   :ensure t
+;;   :config
+;;   (add-hook 'c-mode-hook 'lsp)
+;;   (add-hook 'c++-mode-hook 'lsp))
+
+;; ;; Not quite sure if this will work. May remove at a later date.
+;; (use-package dap-mode :ensure t)
+
+;; (use-package helm-lsp :ensure t)
+
+;; (setq gc-cons-threshold (* 100 1024 1024)
+;;       read-process-output-max (* 1024 1024)
+;;       company-idle-delay 0.0
+;;       company-minimum-prefix-length 1
+;;       lsp-idle-delay 0.1)  ;; clangd is fast
+
+;; (with-eval-after-load 'lsp-mode
+;;   (require 'dap-cpptools))
+
+(use-package flycheck
+  :ensure t
+  :config
+  (add-hook 'c++-mode-hook 'flycheck-mode))
+
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-mode +1)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+
+(global-set-key (kbd "C-z") 'eshell)
 
 ;; Appearance
-(add-to-list 'default-frame-alist '(font . "IosevkaTerm Nerd Font-18"))
-(set-face-attribute 'default t :font "IosevkaTerm Nerd Font-18")
+(add-to-list 'default-frame-alist '(font . "IosevkaTerm Nerd Font-12"))
+(set-face-attribute 'default t :font "IosevkaTerm Nerd Font-12")
 
 (global-whitespace-mode 1)
 (setq-default whitespace-style
@@ -149,7 +192,8 @@
  '(custom-enabled-themes '(gruber-darker))
  '(custom-safe-themes
    '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default))
- '(package-selected-packages '(magit gruber-darker-theme dashboard)))
+ '(package-selected-packages
+   '(helm-lsp flycheck helm-xref helm projectile dap-mode lsp-mode magit gruber-darker-theme dashboard)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
