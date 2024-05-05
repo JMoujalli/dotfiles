@@ -31,6 +31,19 @@
 
 ;; Dashboard
 (setq inhibit-splash-screen t)
+
+(defun efs/display-startup-time ()
+  (message "Emacs loaded in %s with %d garbage collections."
+           (format "%.2f seconds"
+                   (float-time
+                   (time-subtract after-init-time before-init-time)))
+           gcs-done))
+
+(add-hook 'emacs-startup-hook #'efs/display-startup-time)
+
+;; (defun display-startup-echo-area-message ()
+;;     (message "Message here."))
+
 ;; (use-package dashboard
 ;;   :ensure t
 ;;   :config
@@ -47,6 +60,7 @@
 
 (use-package elfeed-org
   :ensure t
+  :after elfeed
   :config
   (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/elfeed.org")))
@@ -82,6 +96,8 @@
 	(flyspell-buffer)))
 
 (global-set-key (kbd "C-'") 'flyspell-toggle)
+
+;; I don't know how to unbind keys in every mode.
 
 (add-hook 'org-mode-hook
           (lambda ()
@@ -172,8 +188,8 @@
 (global-set-key (kbd "C-z") 'eshell)
 
 ;; Appearance
-(add-to-list 'default-frame-alist '(font . "IosevkaTerm Nerd Font-12"))
-(set-face-attribute 'default t :font "IosevkaTerm Nerd Font-12")
+;; (add-to-list 'default-frame-alist '(font . "IosevkaTerm Nerd Font-12"))
+;; (set-face-attribute 'default t :font "IosevkaTerm Nerd Font-12")
 
 (global-whitespace-mode 1)
 (setq-default whitespace-style
