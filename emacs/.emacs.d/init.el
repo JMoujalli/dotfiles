@@ -14,9 +14,12 @@
   (setq-default visual-fill-column-center-text t))
 
 ;; Emacs backups
-(setq backup-directory-alist `(("." . "~/.saves")))
-(setq backup-by-copying t)
-(setq delete-old-versions t)
+;; The files get int he way and I don't use them ever.
+(setq make-backup-files nil)
+
+;; (setq backup-directory-alist `(("." . "~/.saves")))
+;; (setq backup-by-copying t)
+;; (setq delete-old-versions t)
 
 ;; ido
 ;; (use-package ido-completing-read+ :ensure t)
@@ -28,6 +31,9 @@
 
 ;; (global-set-key (kbd "M-x") 'smex)
 ;; (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+
+;; Dialog
+(setq use-dialog-box nil)
 
 ;; Dashboard
 (setq inhibit-splash-screen t)
@@ -127,6 +133,20 @@
   (global-set-key (kbd "M-p") 'move-text-up)
   (global-set-key (kbd "M-n") 'move-text-down))
 
+;; Not working for some reason.
+(defun delete-other-buffers ()
+  "Delte all other buffers."
+  (interactive)
+  (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
+
+(defun kill-other-buffers ()
+  "Delte all other buffers."
+  (interactive)
+  (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
+
+
+(use-package alarm-clock :ensure t)
+
 ;; Completion
 (use-package yasnippet
   :ensure t
@@ -209,7 +229,7 @@
  '(custom-safe-themes
    '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default))
  '(package-selected-packages
-   '(helm-lsp flycheck helm-xref helm projectile dap-mode lsp-mode magit gruber-darker-theme dashboard)))
+   '(alarm-clock helm-lsp flycheck helm-xref helm projectile dap-mode lsp-mode magit gruber-darker-theme dashboard)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
