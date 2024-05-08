@@ -57,11 +57,11 @@
 ;;   (setq dashboard-center-content t))
 
 ;; Elfeed for RSS feeds and YouTube videos.
+(global-set-key (kbd "C-x w") 'elfeed)
 (use-package elfeed
   :ensure t
   :defer t
   :config
-  (global-set-key (kbd "C-x w") 'elfeed)
   (setq-default elfeed-search-filter "@1-year-old"))
 
 (use-package elfeed-org
