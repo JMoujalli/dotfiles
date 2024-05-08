@@ -175,7 +175,9 @@ exec --no-startup-id emacs
 bindsym $mod+w exec --no-startup-id emacs
 
 # Shutdown script.
-# To be added.
+bindsym $mod+x exec "~/.config/i3/logout.sh"
 
 # Screen layout select script.
-# To be added.
+exec --no-startup-id "~/.config/i3/screenlayout.sh"
+bindsym $mod+shift+p exec "~/.config/i3/screenselect.sh"
+# Dmenu selection tool to be added.
