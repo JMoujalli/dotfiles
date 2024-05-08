@@ -170,14 +170,20 @@ workspace_layout tabbed
 focus_follows_mouse no
 exec --no-startup-id nitrogen --restore &
 
-# Launching into emacs.
-exec --no-startup-id emacs
-bindsym $mod+w exec --no-startup-id emacs
 
 # Shutdown script.
 bindsym $mod+x exec "~/.config/i3/logout.sh"
 
+# xrandr dpi settings
+exec --no-startup-id "~/config/i3/saveddpi.sh"
+
 # Screen layout select script.
 exec --no-startup-id "~/.config/i3/screenlayout.sh"
 bindsym $mod+shift+p exec "~/.config/i3/screenselect.sh"
-# Dmenu selection tool to be added.
+
+# Refresh i3 so previous changes take effect.
+exec --no-startup-id reload
+
+# Launching into emacs.
+exec --no-startup-id emacs
+bindsym $mod+w exec --no-startup-id emacs
