@@ -162,6 +162,7 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
         status_command i3status
+	separator_symbol " "
 	tray_output none
 }
 
@@ -170,15 +171,14 @@ workspace_layout tabbed
 focus_follows_mouse no
 exec --no-startup-id nitrogen --restore &
 
-
 # Shutdown script.
-bindsym $mod+x exec "~/.config/i3/logout.sh"
+bindsym $mod+shift+x exec "~/.config/i3/logout.sh"
 
 # xrandr dpi settings
-exec --no-startup-id "~/config/i3/saveddpi.sh"
+exec_always --no-startup-id "~/.config/i3/saveddpi.sh"
 
 # Screen layout select script.
-exec --no-startup-id "~/.config/i3/screenlayout.sh"
+exec_always --no-startup-id "~/.config/i3/screenlayout.sh"
 bindsym $mod+shift+p exec "~/.config/i3/screenselect.sh"
 
 # Refresh i3 so previous changes take effect.

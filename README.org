@@ -29,4 +29,4 @@ These files are a work in progress and may not necessarily work for your system 
 - Simplify mode line.
   Currently, depending on the filetype, the mode line has too much information.
 - Experiment with email in emacs. notmuch, mu4e, etc.
-- Further experiment with emacs completion.
+- Further experimentation with emacs completion.
