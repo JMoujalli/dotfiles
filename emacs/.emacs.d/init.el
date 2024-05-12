@@ -116,8 +116,23 @@
 ;; Org
 (use-package org :ensure t)
 
-;; (use-package org-roam
-;;   :ensure t)
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory (file-truename "~/Documents/Notes/"))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  ;; If you're using a vertical completion framework, you might want a more informative completion interface
+  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-db-autosync-mode)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol))
 
 ;; Editing
 (use-package multiple-cursors
@@ -153,10 +168,10 @@
   (global-company-mode))
 
 ;; Adds a vertical layout to the minibuffer.
-;; TODO Slightly decrease the number of items in the vertica list.
 (use-package vertico
   :ensure t
   :config
+  (setq vertico-count 5)
   (setq vertico-cycle t)
   (setq vertico-resize nil)
   (vertico-mode 1))
@@ -249,7 +264,7 @@
  '(custom-safe-themes
    '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default))
  '(package-selected-packages
-   '(orderless marginalia vertico alarm-clock helm-lsp flycheck helm-xref helm projectile dap-mode lsp-mode magit gruber-darker-theme dashboard)))
+   '(org-roam orderless marginalia vertico alarm-clock helm-lsp flycheck helm-xref helm projectile dap-mode lsp-mode magit gruber-darker-theme dashboard)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
