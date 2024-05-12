@@ -32,7 +32,9 @@
 ;; (global-set-key (kbd "M-x") 'smex)
 ;; (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
-;; Dialog
+;; NOTE: smex and ido did not work for me. I often found myself fighting the completions. For example, when I wanted to go to ~/dotfiles/emacs/.emacs.d/ it would take me to ~/.emacs.d/ (Prior to when I was using Stow). When I tried to make files using C-x C-f with the same name as other files I needed to hit RET quickly so that it would not complete. I did not have such troubles with helm. I chose not to use helm because it felt to "bulky". I am currently using vertico. I may do some more tests but the current setup works for now.
+
+;; Disables the dialog UI elements that pop up.
 (setq use-dialog-box nil)
 
 ;; Dashboard
@@ -103,8 +105,7 @@
 
 (global-set-key (kbd "C-'") 'flyspell-toggle)
 
-;; I don't know how to unbind keys in every mode.
-
+;; I don't know how to unbind keys in every mode. Thus, I have manually removed it from the mode I need it in.
 (add-hook 'org-mode-hook
           (lambda ()
                   (keymap-unset org-mode-map "C-'")))
@@ -139,14 +140,6 @@
   (interactive)
   (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
 
-(defun kill-other-buffers ()
-  "Delte all other buffers."
-  (interactive)
-  (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
-
-
-(use-package alarm-clock :ensure t)
-
 ;; Completion
 (use-package yasnippet
   :ensure t
@@ -159,17 +152,41 @@
   :config
   (global-company-mode))
 
-(use-package helm
+;; Adds a vertical layout to the minibuffer.
+;; TODO Slightly decrease the number of items in the vertica list.
+(use-package vertico
   :ensure t
   :config
-  (helm-mode)
-  (global-set-key (kbd "M-x") #'helm-M-x)
-  (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-  (global-set-key (kbd "C-x C-f") #'helm-find-files)
-  (global-set-key (kbd "C-x b") #'helm-mini))
+  (setq vertico-cycle t)
+  (setq vertico-resize nil)
+  (vertico-mode 1))
 
-(use-package helm-xref :ensure t)
-(require' helm-xref)
+;; Adds information in the "margin" of the minibuffer. This takes advantage of what would otherwise be unused space.
+(use-package marginalia
+  :ensure t
+  :config
+  (marginalia-mode 1))
+
+;; Gives more complex completion suggestions.
+(use-package orderless
+  :ensure t
+  :config
+  (setq completion-styles '(orderless basic)))
+
+;; Saves the history of the minibuffer for when emacs has been restarted.
+(savehist-mode 1)
+
+;; (use-package helm
+;;   :ensure t
+;;   :config
+;;   (helm-mode)
+;;   (global-set-key (kbd "M-x") #'helm-M-x)
+;;   (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
+;;   (global-set-key (kbd "C-x C-f") #'helm-find-files)
+;;   (global-set-key (kbd "C-x b") #'helm-mini))
+
+;; (use-package helm-xref :ensure t)
+;; (require' helm-xref)
 
 ;; Code
 (require 'compile)
@@ -199,18 +216,20 @@
   :config
   (add-hook 'c++-mode-hook 'flycheck-mode))
 
-(use-package projectile
-  :ensure t
-  :config
-  (projectile-mode +1)
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+;; (use-package projectile
+;;   :ensure t
+;;   :config
+;;   (projectile-mode +1)
+;;   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 
 (global-set-key (kbd "C-z") 'eshell)
 
 ;; Appearance
+;; NOTE: This is now set in the early-init-file to prevent a change in size on startup.
 ;; (add-to-list 'default-frame-alist '(font . "IosevkaTerm Nerd Font-12"))
 ;; (set-face-attribute 'default t :font "IosevkaTerm Nerd Font-12")
 
+;; NOTE: Whitespace mode works with the current theme but looks bad with other themes. Maybe want to add a toggle function similar to the flyspell toggle.
 (global-whitespace-mode 1)
 (setq-default whitespace-style
 	      '(face spaces empty tabs newline trailing space-mark tab-mark))
@@ -220,6 +239,7 @@
 
 ;; Theme
 (use-package gruber-darker-theme :ensure t)
+;; NOTE: May be worth settings themes statically within the init.el file rather than through the customizse menus. More reading about this needed.
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -229,7 +249,7 @@
  '(custom-safe-themes
    '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default))
  '(package-selected-packages
-   '(alarm-clock helm-lsp flycheck helm-xref helm projectile dap-mode lsp-mode magit gruber-darker-theme dashboard)))
+   '(orderless marginalia vertico alarm-clock helm-lsp flycheck helm-xref helm projectile dap-mode lsp-mode magit gruber-darker-theme dashboard)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
