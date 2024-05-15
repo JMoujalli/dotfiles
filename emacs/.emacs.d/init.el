@@ -37,6 +37,12 @@
 ;; Disables the dialog UI elements that pop up.
 (setq use-dialog-box nil)
 
+;; Modeline customisation
+;; NOTE: This fixes the modeline problem temporarily. I think I would prefer a custom modeline. This will need to be done at a later date.
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
+
 ;; Dashboard
 (setq inhibit-splash-screen t)
 
@@ -264,7 +270,7 @@
  '(custom-safe-themes
    '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default))
  '(package-selected-packages
-   '(org-roam orderless marginalia vertico alarm-clock helm-lsp flycheck helm-xref helm projectile dap-mode lsp-mode magit gruber-darker-theme dashboard)))
+   '(doom-modeline org-roam orderless marginalia vertico alarm-clock helm-lsp flycheck helm-xref helm projectile dap-mode lsp-mode magit gruber-darker-theme dashboard)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
