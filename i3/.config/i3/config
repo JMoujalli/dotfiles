@@ -170,6 +170,8 @@ bar {
 workspace_layout tabbed
 focus_follows_mouse no
 exec --no-startup-id nitrogen --restore &
+default_border none
+default_floating_border none
 
 # Shutdown script.
 bindsym $mod+shift+x exec "~/.config/i3/logout.sh"

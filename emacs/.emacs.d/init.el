@@ -14,7 +14,6 @@
   (setq-default visual-fill-column-center-text t))
 
 ;; Emacs backups
-;; The files get int he way and I don't use them ever.
 (setq make-backup-files nil)
 
 ;; (setq backup-directory-alist `(("." . "~/.saves")))
@@ -57,12 +56,6 @@
 
 ;; (defun display-startup-echo-area-message ()
 ;;     (message "Message here."))
-
-;; (use-package dashboard
-;;   :ensure t
-;;   :config
-;;   (dashboard-setup-startup-hook)
-;;   (setq dashboard-center-content t))
 
 ;; Elfeed for RSS feeds and YouTube videos.
 (global-set-key (kbd "C-x w") 'elfeed)
@@ -155,7 +148,7 @@
   (global-set-key (kbd "M-p") 'move-text-up)
   (global-set-key (kbd "M-n") 'move-text-down))
 
-;; Not working for some reason.
+;; NOTE: I don't think it is a good practice to delete all other buffers. I do like to use it sometimes.
 (defun delete-other-buffers ()
   "Delte all other buffers."
   (interactive)
@@ -218,7 +211,6 @@
 ;;   (add-hook 'c-mode-hook 'lsp)
 ;;   (add-hook 'c++-mode-hook 'lsp))
 
-;; ;; Not quite sure if this will work. May remove at a later date.
 ;; (use-package dap-mode :ensure t)
 
 ;; (use-package helm-lsp :ensure t)
@@ -251,6 +243,7 @@
 ;; (set-face-attribute 'default t :font "IosevkaTerm Nerd Font-12")
 
 ;; NOTE: Whitespace mode works with the current theme but looks bad with other themes. Maybe want to add a toggle function similar to the flyspell toggle.
+;; NOTE: When disabling whitespace mode buffers need to be updated.to change the whitespaces.
 (global-whitespace-mode 1)
 (setq-default whitespace-style
 	      '(face spaces empty tabs newline trailing space-mark tab-mark))
@@ -261,6 +254,7 @@
 ;; Theme
 (use-package gruber-darker-theme :ensure t)
 ;; NOTE: May be worth settings themes statically within the init.el file rather than through the customizse menus. More reading about this needed.
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
