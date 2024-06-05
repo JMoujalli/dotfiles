@@ -1,0 +1,25 @@
+IMAPAccount home
+Host outlook.office365.com
+UserCmd "gpg -q --for-your-eyes-only -d ~/.authinfo.gpg | awk -F ' ' '/home/ { print $(NF-2); exit; }'"
+PassCmd "gpg -q --for-your-eyes-only -d ~/.authinfo.gpg | awk -F ' ' '/home/ { print $NF; exit; }'"
+Port 993
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore home-remote
+Account home
+
+MaildirStore home-local
+Subfolders Verbatim
+Path ~/.mail/home/
+Inbox ~/.mail/home/Inbox/
+
+Channel home
+Far :home-remote:
+Near :home-local:
+Patterns *
+Sync All
+Create Both
+Remove Both
+Expunge Both
+SyncState *

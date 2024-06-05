@@ -109,6 +109,13 @@
           (lambda ()
                   (keymap-unset org-mode-map "C-'")))
 
+;; Email
+(use-package notmuch
+  :ensure t
+  :defer t
+  :commands notmuch-hello
+  :bind (("C-c m" . notmuch-hello)))
+
 ;; Git
 (use-package magit :ensure t)
 
@@ -148,7 +155,7 @@
   (global-set-key (kbd "M-p") 'move-text-up)
   (global-set-key (kbd "M-n") 'move-text-down))
 
-;; NOTE: I don't think it is a good practice to delete all other buffers. I do like to use it sometimes.
+;; NOTE: I don't think it is a good practice to delete all other buffers, may delete buffers that are needed. I do like to use it sometimes.
 (defun delete-other-buffers ()
   "Delte all other buffers."
   (interactive)
@@ -243,7 +250,7 @@
 ;; (set-face-attribute 'default t :font "IosevkaTerm Nerd Font-12")
 
 ;; NOTE: Whitespace mode works with the current theme but looks bad with other themes. Maybe want to add a toggle function similar to the flyspell toggle.
-;; NOTE: When disabling whitespace mode buffers need to be updated.to change the whitespaces.
+;; NOTE: When disabling whitespace mode buffers need to be updated to change the whitespaces.
 (global-whitespace-mode 1)
 (setq-default whitespace-style
 	      '(face spaces empty tabs newline trailing space-mark tab-mark))
@@ -264,7 +271,7 @@
  '(custom-safe-themes
    '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default))
  '(package-selected-packages
-   '(doom-modeline org-roam orderless marginalia vertico alarm-clock helm-lsp flycheck helm-xref helm projectile dap-mode lsp-mode magit gruber-darker-theme dashboard)))
+   '(notmuch doom-modeline org-roam orderless marginalia vertico alarm-clock helm-lsp flycheck helm-xref helm projectile dap-mode lsp-mode magit gruber-darker-theme dashboard)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
