@@ -110,11 +110,10 @@
                   (keymap-unset org-mode-map "C-'")))
 
 ;; Email
-(use-package notmuch
-  :ensure t
-  :defer t
-  :commands notmuch-hello
-  :bind (("C-c m" . notmuch-hello)))
+;; (use-package notmuch
+;;   :ensure t
+;;   :defer t
+;;   :bind (("C-c m" . notmuch-hello)))
 
 ;; Git
 (use-package magit :ensure t)
