@@ -20,31 +20,18 @@
 ;; (setq backup-by-copying t)
 ;; (setq delete-old-versions t)
 
-;; ido
-;; (use-package ido-completing-read+ :ensure t)
-;; (use-package smex :ensure t)
-
-;; (ido-mode 1)
-;; (ido-everywhere 1)
-;; (ido-ubiquitous-mode 1)
-
-;; (global-set-key (kbd "M-x") 'smex)
-;; (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
-
-;; NOTE: smex and ido did not work for me. I often found myself fighting the completions. For example, when I wanted to go to ~/dotfiles/emacs/.emacs.d/ it would take me to ~/.emacs.d/ (Prior to when I was using Stow). When I tried to make files using C-x C-f with the same name as other files I needed to hit RET quickly so that it would not complete. I did not have such troubles with helm. I chose not to use helm because it felt to "bulky". I am currently using vertico. I may do some more tests but the current setup works for now.
-
 ;; Disables the dialog UI elements that pop up.
 (setq use-dialog-box nil)
 
 ;; Modeline customisation
-;; NOTE: This fixes the modeline problem temporarily. I think I would prefer a custom modeline. This will need to be done at a later date.
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1))
 
-;; Dashboard
+;; Startup
 (setq inhibit-splash-screen t)
 
+;; Obtained from someone on the internet. Can't recall exactly who.
 (defun efs/display-startup-time ()
   (message "Emacs loaded in %s with %d garbage collections."
            (format "%.2f seconds"
@@ -53,9 +40,6 @@
            gcs-done))
 
 (add-hook 'emacs-startup-hook #'efs/display-startup-time)
-
-;; (defun display-startup-echo-area-message ()
-;;     (message "Message here."))
 
 ;; Elfeed for RSS feeds and YouTube videos.
 (global-set-key (kbd "C-x w") 'elfeed)
@@ -110,10 +94,10 @@
                   (keymap-unset org-mode-map "C-'")))
 
 ;; Email
-;; (use-package notmuch
-;;   :ensure t
-;;   :defer t
-;;   :bind (("C-c m" . notmuch-hello)))
+(use-package notmuch
+  :ensure t
+  :defer t
+  :bind (("C-c m" . notmuch-hello)))
 
 ;; Git
 (use-package magit :ensure t)
@@ -154,7 +138,6 @@
   (global-set-key (kbd "M-p") 'move-text-up)
   (global-set-key (kbd "M-n") 'move-text-down))
 
-;; NOTE: I don't think it is a good practice to delete all other buffers, may delete buffers that are needed. I do like to use it sometimes.
 (defun delete-other-buffers ()
   "Delte all other buffers."
   (interactive)
@@ -196,39 +179,8 @@
 ;; Saves the history of the minibuffer for when emacs has been restarted.
 (savehist-mode 1)
 
-;; (use-package helm
-;;   :ensure t
-;;   :config
-;;   (helm-mode)
-;;   (global-set-key (kbd "M-x") #'helm-M-x)
-;;   (global-set-key (kbd "C-x r b") #'helm-filtered-bookmarks)
-;;   (global-set-key (kbd "C-x C-f") #'helm-find-files)
-;;   (global-set-key (kbd "C-x b") #'helm-mini))
-
-;; (use-package helm-xref :ensure t)
-;; (require' helm-xref)
-
 ;; Code
 (require 'compile)
-
-;; (use-package lsp-mode
-;;   :ensure t
-;;   :config
-;;   (add-hook 'c-mode-hook 'lsp)
-;;   (add-hook 'c++-mode-hook 'lsp))
-
-;; (use-package dap-mode :ensure t)
-
-;; (use-package helm-lsp :ensure t)
-
-;; (setq gc-cons-threshold (* 100 1024 1024)
-;;       read-process-output-max (* 1024 1024)
-;;       company-idle-delay 0.0
-;;       company-minimum-prefix-length 1
-;;       lsp-idle-delay 0.1)  ;; clangd is fast
-
-;; (with-eval-after-load 'lsp-mode
-;;   (require 'dap-cpptools))
 
 (use-package flycheck
   :ensure t
@@ -250,12 +202,12 @@
 
 ;; NOTE: Whitespace mode works with the current theme but looks bad with other themes. Maybe want to add a toggle function similar to the flyspell toggle.
 ;; NOTE: When disabling whitespace mode buffers need to be updated to change the whitespaces.
-(global-whitespace-mode 1)
-(setq-default whitespace-style
-	      '(face spaces empty tabs newline trailing space-mark tab-mark))
+;; (global-whitespace-mode 1)
+;; (setq-default whitespace-style
+;; 	      '(face spaces empty tabs newline trailing space-mark tab-mark))
 
-(global-display-line-numbers-mode 1)
-(setq display-line-numbers-type 'relative)
+;; (global-display-line-numbers-mode 1)
+;; (setq display-line-numbers-type 'relative)
 
 ;; Theme
 (use-package gruber-darker-theme :ensure t)
@@ -270,7 +222,7 @@
  '(custom-safe-themes
    '("e27c9668d7eddf75373fa6b07475ae2d6892185f07ebed037eedf783318761d7" default))
  '(package-selected-packages
-   '(notmuch doom-modeline org-roam orderless marginalia vertico alarm-clock helm-lsp flycheck helm-xref helm projectile dap-mode lsp-mode magit gruber-darker-theme dashboard)))
+   '(ox-rss htmlize org-contrib doom-modeline org-roam orderless marginalia vertico alarm-clock helm-lsp flycheck helm-xref helm projectile dap-mode lsp-mode magit gruber-darker-theme dashboard)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
