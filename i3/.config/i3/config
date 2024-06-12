@@ -189,3 +189,5 @@ exec --no-startup-id reload
 # Launching into emacs.
 exec --no-startup-id emacs
 bindsym $mod+w exec --no-startup-id emacs
+
+exec --no-startup-id i3-msg restart

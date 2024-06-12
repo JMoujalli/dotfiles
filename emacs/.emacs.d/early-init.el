@@ -5,7 +5,7 @@
 (add-to-list 'default-frame-alist '(font . "IosevkaTerm Nerd Font-12"))
 (set-face-attribute 'default t :font "IosevkaTerm Nerd Font-12")
 
-;; WARNING: Chang the following at your own risk.
+;; WARNING: Change the following at your own risk.
 (defvar old-file-name-handler file-name-handler-alist)
 (defvar old-vc-handeled-backends vc-handled-backends)
 (setq file-name-handler-alist nil
