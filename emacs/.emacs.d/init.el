@@ -143,7 +143,12 @@
   (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
 
 ;; If spacious-padding is not high enough in the init file there are visual bugs. Must be before all those below this position.
-(use-package spacious-padding :ensure t)
+(use-package spacious-padding
+  :ensure t
+  :config
+  (setq spacious-padding-subtle-mode-line
+      `( :mode-line-active 'default
+         :mode-line-inactive vertical-border)))
 (spacious-padding-mode 1)
 
 ;; Modeline customisation
@@ -195,6 +200,7 @@
   :config
   (add-hook 'c++-mode-hook 'flycheck-mode))
 
+;; Had projectile enabled for some time but didn't use it. Maybe when I have a more development heavy workflow it may be good. I will keep it in the init until then.
 ;; (use-package projectile
 ;;   :ensure t
 ;;   :config
@@ -214,6 +220,7 @@
 (setq-default whitespace-style
 	      '(face spaces empty tabs newline trailing space-mark tab-mark))
 
+;; Should create a keybinding or a hook to enable/disable line numbers in various modes (i.e. When editing files line numbers should be enabled. When reading files line numbers should be disabled.) When in a Python file for example line numebrs and whitespace-mode should both be enabled.
 (global-display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
 
@@ -224,6 +231,8 @@
 
 (setq custom-safe-themes t)
 (use-package gruber-darker-theme :ensure t)
-(load-theme 'gruber-darker t)
-;; (load-theme 'modus-operandi t)
+;; (load-theme 'gruber-darker t)
+;; NOTE: The modus-themes-toggle keybind is probably not on a good key. C-x is used frequently and C-x t has commands that follow. Works for now, may need to change it later. 
+(global-set-key (kbd "C-x t") 'modus-themes-toggle)
+(load-theme 'modus-operandi t)
 ;; NOTE: Need to somehow have the early-init-file set the initial background colour based on the theme to be loaded in the init file. I don't know just yet how to do this.
