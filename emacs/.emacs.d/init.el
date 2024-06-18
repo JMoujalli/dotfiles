@@ -214,6 +214,15 @@
 ;; (add-to-list 'default-frame-alist '(font . "IosevkaTerm Nerd Font-12"))
 ;; (set-face-attribute 'default t :font "IosevkaTerm Nerd Font-12")
 
+;; Truncated lines. Trying to force line wrapping. Not working for some reason.
+(set-default 'truncate-lines nil)
+(setq truncate-partial-width-windows nil)
+
+;; NOTE: org-mode files prevent changing line truncation settings. This is so that tables are not displayed incorrectly. I am turning this off because I don't use tables yet.
+(add-hook 'org-mode-hook
+      (lambda ()
+        (toggle-truncate-lines nil) ))
+
 ;; NOTE: Whitespace mode works with the current theme but looks bad with other themes. Maybe want to add a toggle function similar to the flyspell toggle.
 ;; NOTE: When disabling whitespace mode buffers need to be updated to change the whitespaces.
 (global-whitespace-mode 0)
@@ -234,5 +243,5 @@
 ;; (load-theme 'gruber-darker t)
 ;; NOTE: The modus-themes-toggle keybind is probably not on a good key. C-x is used frequently and C-x t has commands that follow. Works for now, may need to change it later. 
 (global-set-key (kbd "C-x t") 'modus-themes-toggle)
-(load-theme 'modus-operandi t)
+(load-theme 'modus-vivendi t)
 ;; NOTE: Need to somehow have the early-init-file set the initial background colour based on the theme to be loaded in the init file. I don't know just yet how to do this.
