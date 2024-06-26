@@ -174,7 +174,6 @@ default_floating_border none
 
 # Prepare desktop
 exec --no-startup-id nitrogen --restore &
-# exec --no-startup-id picom
 
 # Shutdown script.
 bindsym $mod+shift+x exec "~/.config/i3/logout.sh"
@@ -185,7 +184,6 @@ exec_always --no-startup-id "~/.config/i3/saveddpi.sh"
 # Screen layout select script.
 exec_always --no-startup-id "~/.config/i3/screenlayout.sh"
 bindsym $mod+shift+p exec "~/.config/i3/screenselect.sh"
-
 
 # Switch control and capslock
 exec_always --no-startup-id setxkbmap -layout us -option ctrl:swapcaps
