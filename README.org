@@ -1,9 +1,7 @@
 * About
-
 My dotfiles that I generally use with Arch linux (Maybe Debian).
 
 * Installation
-
 Clone the repository into: ~/dotfiles
 
 Make symlinks using:
@@ -22,9 +20,32 @@ To remove the symlinks:
   stow -vDt ~ i3 emacs
 #+END_SRC
 
+* Packages (Need to be installed manually)
+- stow
+- git
+- emacs (>=29 preferred)
+- i3
+- xrandr (xorg-xrandr on Arch Linux)
+- arandr
+- msmtp
+- mbsync (isync)
+- notmuch
+
+* Graphics
+If using laptop with discrete GPU (My ThinkPad T480) then you should, in order to improve battery life, disable it.
+
+Install:
+- bumblebee (https://wiki.archlinux.org/title/Bumblebee)
+- bbswitch
+
+Simply installing bumblebee and bbswitch shoud be enough to disable the nvidia gpu. Test by running:
+
+#+BEGIN_SRC
+  cat /proc/acpi/bbswitch
+#+END_SRC
+
 * Warning
 These files are a work in progress and may not necessarily work for your system at any given time.
 
 * TODO:
-- Experiment with email in emacs. notmuch, mu4e, etc.
-- Literate init file would be interesting.
+- Literate init file with org mode.

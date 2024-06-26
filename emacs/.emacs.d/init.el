@@ -105,6 +105,10 @@
 ;; Org
 (use-package org :ensure t)
 
+;; NOTE: Maybe worth configuring org-modern to improve the look of org-agenda.
+;; (use-package org-modern :ensure t)
+;; (with-eval-after-load 'org (global-org-modern-mode))
+
 (use-package org-roam
   :ensure t
   :custom
