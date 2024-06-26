@@ -183,8 +183,8 @@ exec_always --no-startup-id "~/.config/i3/saveddpi.sh"
 exec_always --no-startup-id "~/.config/i3/screenlayout.sh"
 bindsym $mod+shift+p exec "~/.config/i3/screenselect.sh"
 
-# Refresh i3 so previous changes take effect.
-exec --no-startup-id reload
+# Switch control and capslock
+exec_always --no-startup-id setxkbmap -layout us -option ctrl:swapcaps
 
 # Launching into emacs.
 exec --no-startup-id emacs
