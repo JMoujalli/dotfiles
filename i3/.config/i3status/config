@@ -22,12 +22,14 @@ volume master {
 # To be fixed.
 battery 0 {
         format = "B0: %percentage"
+	format_down = ""
         path = "/sys/class/power_supply/BAT0/uevent"
         low_threshold = 10
 }
 
 battery 1 {
 	format = "B1: %percentage"
+	format_down = ""
 	path = "/sys/class/power_supply/BAT1/uevent"
 	low_threshold = 10
 }
