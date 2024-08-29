@@ -166,6 +166,10 @@ bar {
 	# tray_output none
 }
 
+#Applets
+exec --no-startup-id bluetman-applet
+exec --no-startup-id nm-applet
+
 # i3 setup commands.
 workspace_layout tabbed
 focus_follows_mouse no
