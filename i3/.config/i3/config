@@ -190,7 +190,7 @@ exec_always --no-startup-id "~/.config/i3/screenlayout.sh"
 bindsym $mod+shift+p exec "~/.config/i3/screenselect.sh"
 
 # Switch control and capslock
-exec_always --no-startup-id setxkbmap -layout us -option ctrl:nocaps
+# exec_always --no-startup-id setxkbmap -layout us -option ctrl:nocaps
 
 # Launching into emacs.
 exec --no-startup-id emacs
