@@ -1,5 +1,5 @@
 * About
-My dotfiles that I generally use with Arch linux (Maybe Debian).
+My dotfiles that I generally use with Arch Linux (Maybe Debian).
 
 * Installation
 Clone the repository into: ~/dotfiles
@@ -38,7 +38,7 @@ Install:
 - bumblebee (https://wiki.archlinux.org/title/Bumblebee)
 - bbswitch
 
-Simply installing bumblebee and bbswitch shoud be enough to disable the nvidia gpu. Test by running:
+Simply installing bumblebee and bbswitch should be enough to disable the Nvidia GPU. Test by running:
 
 #+BEGIN_SRC
   cat /proc/acpi/bbswitch

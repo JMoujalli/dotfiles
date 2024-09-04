@@ -87,6 +87,11 @@
           (lambda ()
                   (keymap-unset org-mode-map "C-'")))
 
+;; Langtool didn't work well enough.
+;; (use-package langtool :ensure t)
+;; (setq langtool-java-classpath
+;;       "/usr/share/languagetool:/usr/share/java/languagetool/*")
+
 ;; Email
 (use-package notmuch
   :ensure t
@@ -208,6 +213,8 @@
   :ensure t
   :config
   (add-hook 'c++-mode-hook 'flycheck-mode))
+
+(use-package olivetti :ensure t)
 
 ;; Had projectile enabled for some time but didn't use it. Maybe when I have a more development heavy workflow it may be good. I will keep it in the init until then.
 ;; (use-package projectile
