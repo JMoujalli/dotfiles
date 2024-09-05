@@ -193,8 +193,7 @@ bindsym $mod+shift+p exec "~/.config/i3/screenselect.sh"
 # exec_always --no-startup-id setxkbmap -layout us -option ctrl:nocaps
 
 # Launching into emacs.
-exec --no-startup-id emacs
-bindsym $mod+w exec --no-startup-id emacs
+bindsym $mod+w exec --no-startup-id emacsclient -c
 
 # Restart i3 so all changes take effect
 exec --no-startup-id i3-msg restart

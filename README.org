@@ -24,6 +24,7 @@ To remove the symlinks:
 - stow
 - git
 - emacs (>=29 preferred)
+  * Run "systemctl --user enable --now emacs" for emacs daemon
 - i3
 - xrandr (xorg-xrandr on Arch Linux)
 - arandr
