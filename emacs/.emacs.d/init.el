@@ -87,11 +87,6 @@
           (lambda ()
                   (keymap-unset org-mode-map "C-'")))
 
-;; Langtool didn't work well enough.
-;; (use-package langtool :ensure t)
-;; (setq langtool-java-classpath
-;;       "/usr/share/languagetool:/usr/share/java/languagetool/*")
-
 ;; Email
 (use-package notmuch
   :ensure t
@@ -116,7 +111,6 @@
 
 ;; NOTE: Stores links that can be called in org files with C-c C-l.
 (global-set-key (kbd "C-c l") 'org-store-link)
-
  
 ;; org-mode notes
 (use-package org-roam
@@ -163,7 +157,9 @@
   (setq spacious-padding-subtle-mode-line
       `( :mode-line-active 'default
          :mode-line-inactive vertical-border)))
-(spacious-padding-mode 1)
+;; Disabled for now as it causes visual bugs when using transparency.
+(spacious-padding-mode 0)
+
 
 ;; Modeline customisation
 (use-package doom-modeline
@@ -216,13 +212,6 @@
 
 (use-package olivetti :ensure t)
 
-;; Had projectile enabled for some time but didn't use it. Maybe when I have a more development heavy workflow it may be good. I will keep it in the init until then.
-;; (use-package projectile
-;;   :ensure t
-;;   :config
-;;   (projectile-mode +1)
-;;   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
-
 (global-set-key (kbd "C-z") 'eshell)
 
 ;; Appearance
@@ -230,7 +219,7 @@
 ;; (add-to-list 'default-frame-alist '(font . "IosevkaTerm Nerd Font-12"))
 ;; (set-face-attribute 'default t :font "IosevkaTerm Nerd Font-12")
 
-;; Truncated lines. Trying to force line wrapping. Not working for some reason.
+;; Truncated lines. Trying to force line wrapping.
 (set-default 'truncate-lines nil)
 (setq truncate-partial-width-windows nil)
 
@@ -243,11 +232,16 @@
 ;; NOTE: When disabling whitespace mode buffers need to be updated to change the whitespaces.
 ;; (global-whitespace-mode 0)
 ;; (setq-default whitespace-style
-;; 	      '(face spaces empty tabs newline trailing space-mark tab-mark))
+	      ;; '(face spaces empty tabs newline trailing space-mark tab-mark))
 
 ;; Should create a keybinding or a hook to enable/disable line numbers in various modes (i.e. When editing files line numbers should be enabled. When reading files line numbers should be disabled.) When in a Python file for example line numbers and whitespace-mode should both be enabled.
 (global-display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
+
+;; Transparency
+;; Only works with a compositor enabled (e.g. Picom).
+(set-frame-parameter nil 'alpha-background 80)
+(add-to-list 'default-frame-alist '(alpha-background . 80))
 
 ;; Theme
 ;; NOTE: When making changes to init.el sometimes init.elc (byte compiled version of init.el?) exists and overrides any changes. Delete this file and the changes will take effect. 
@@ -257,5 +251,5 @@
 (setq custom-safe-themes t)
 (use-package gruber-darker-theme :ensure t)
 ;; (load-theme 'gruber-darker t)
-(global-set-key (kbd "C-x t") 'modus-themes-toggle)
+;; (global-set-key (kbd "C-x t") 'modus-themes-toggle)
 (load-theme 'modus-vivendi t)

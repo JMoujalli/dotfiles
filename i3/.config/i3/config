@@ -178,6 +178,7 @@ default_floating_border none
 
 # Prepare desktop
 exec --no-startup-id nitrogen --restore &
+exec_always --no-startup-id picom
 
 # Shutdown script.
 bindsym $mod+shift+x exec "~/.config/i3/logout.sh"
