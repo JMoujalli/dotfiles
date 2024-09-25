@@ -7,7 +7,9 @@
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-PS1='[\u@\h \W]\$ '
+
+# PS1='[\u@\h \W]\$ '
+PS1='[${USER^}@\h \W]\$ '
 
 export EDITOR='emacsclient -t'
 export VISUAL='emacsclient -c'

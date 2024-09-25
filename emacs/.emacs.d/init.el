@@ -1,17 +1,19 @@
-;; Package Repositories
-(require 'package)
-(add-to-list 'package-archives '("gnu-devel"   . "https://elpa.gnu.org/devel/"))
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(package-initialize)
+;; NOTE: The following repositories and use-package setup were only used for Emacs 28. In Emacs 29 the functionality is built in.
 
-;; use-package
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(eval-and-compile
-  (setq use-package-always-ensure t
-        use-package-expand-minimally t)
-  (setq-default visual-fill-column-center-text t))
+;; ;; Package Repositories
+;; (require 'package)
+;; (add-to-list 'package-archives '("gnu-devel"   . "https://elpa.gnu.org/devel/"))
+;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+;; (package-initialize)
+
+;; ;; use-package
+;; (unless (package-installed-p 'use-package)
+;;   (package-refresh-contents)
+;;   (package-install 'use-package))
+;; (eval-and-compile
+;;   (setq use-package-always-ensure t
+;;         use-package-expand-minimally t)
+;;   (setq-default visual-fill-column-center-text t))
 
 ;; Emacs backups
 (setq make-backup-files nil)
@@ -25,14 +27,16 @@
 (setq inhibit-splash-screen t)
 
 ;; Obtained from someone on the Internet. Can't recall exactly who.
-(defun efs/display-startup-time ()
-  (message "Emacs loaded in %s with %d garbage collections."
-           (format "%.2f seconds"
-                   (float-time
-                   (time-subtract after-init-time before-init-time)))
-           gcs-done))
 
-(add-hook 'emacs-startup-hook #'efs/display-startup-time)
+;; NOTE: No longer needed. Using Emacs as a daemon now. 
+;; (defun efs/display-startup-time ()
+;;   (message "Emacs loaded in %s with %d garbage collections."
+;;            (format "%.2f seconds"
+;;                    (float-time
+;;                    (time-subtract after-init-time before-init-time)))
+;;            gcs-done))
+
+;; (add-hook 'emacs-startup-hook #'efs/display-startup-time)
 
 ;; Elfeed for RSS feeds and YouTube videos.
 (global-set-key (kbd "C-x w") 'elfeed)
@@ -48,7 +52,7 @@
   :config
   (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/elfeed.org")))
-
+
 (defun mpv-play-url (url &rest args)
   "Play the given URL in MPV."
   (interactive)
@@ -146,7 +150,7 @@
   (global-set-key (kbd "M-n") 'move-text-down))
 
 (defun delete-other-buffers ()
-  "Delte all other buffers."
+  "Delete all other buffers."
   (interactive)
   (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
 
@@ -240,8 +244,8 @@
 
 ;; Transparency
 ;; Only works with a compositor enabled (e.g. Picom).
-(set-frame-parameter nil 'alpha-background 80)
-(add-to-list 'default-frame-alist '(alpha-background . 80))
+(set-frame-parameter nil 'alpha-background 100)
+(add-to-list 'default-frame-alist '(alpha-background . 100))
 
 ;; Theme
 ;; NOTE: When making changes to init.el sometimes init.elc (byte compiled version of init.el?) exists and overrides any changes. Delete this file and the changes will take effect. 
@@ -250,6 +254,6 @@
 
 (setq custom-safe-themes t)
 (use-package gruber-darker-theme :ensure t)
-;; (load-theme 'gruber-darker t)
+(load-theme 'gruber-darker t)
 ;; (global-set-key (kbd "C-x t") 'modus-themes-toggle)
-(load-theme 'modus-vivendi t)
+;; (load-theme 'modus-vivendi t)
