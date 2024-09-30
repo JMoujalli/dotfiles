@@ -1,19 +1,5 @@
-;; NOTE: The following repositories and use-package setup were only used for Emacs 28. In Emacs 29 the functionality is built in.
-
-;; ;; Package Repositories
-;; (require 'package)
-;; (add-to-list 'package-archives '("gnu-devel"   . "https://elpa.gnu.org/devel/"))
-;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-;; (package-initialize)
-
-;; ;; use-package
-;; (unless (package-installed-p 'use-package)
-;;   (package-refresh-contents)
-;;   (package-install 'use-package))
-;; (eval-and-compile
-;;   (setq use-package-always-ensure t
-;;         use-package-expand-minimally t)
-;;   (setq-default visual-fill-column-center-text t))
+;; Package Repositories
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
 ;; Emacs backups
 (setq make-backup-files nil)
@@ -23,22 +9,10 @@
 ;; Disables the dialog UI elements that pop up.
 (setq use-dialog-box nil)
 
-;; Startup
+;; Start Emacs in a scratch buffer.
 (setq inhibit-splash-screen t)
 
-;; Obtained from someone on the Internet. Can't recall exactly who.
-
-;; NOTE: No longer needed. Using Emacs as a daemon now. 
-;; (defun efs/display-startup-time ()
-;;   (message "Emacs loaded in %s with %d garbage collections."
-;;            (format "%.2f seconds"
-;;                    (float-time
-;;                    (time-subtract after-init-time before-init-time)))
-;;            gcs-done))
-
-;; (add-hook 'emacs-startup-hook #'efs/display-startup-time)
-
-;; Elfeed for RSS feeds and YouTube videos.
+;; Elfeed for RSS feeds and YouTube videos. Great for keeping up to date without the google data mining. 
 (global-set-key (kbd "C-x w") 'elfeed)
 (use-package elfeed
   :ensure t
@@ -52,7 +26,7 @@
   :config
   (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/elfeed.org")))
-
+
 (defun mpv-play-url (url &rest args)
   "Play the given URL in MPV."
   (interactive)
@@ -68,7 +42,7 @@
         ("youtu\\.?be" . mpv-play-url)))                      ; Use mpv-play-url for other YouTube URLs
 
 ;; Spell Check
-;; Need to install en_AU in hunspell with sudo pacman -S hunspell-en_AU (Depending on OS).
+;; Need to install hunspell and en_AU dictionary for hunspell (sudo pacman -S hunspell hunspell-en_AU).
 (setq flyspell-issue-message-flag nil)
 (setq ispell-program-name "hunspell")
 (setq ispell-dictionary "en_AU")
@@ -86,7 +60,7 @@
 
 (global-set-key (kbd "C-'") 'flyspell-toggle)
 
-;; I don't know how to unbind keys in every mode. Thus, I have manually removed it from the mode I need it in.
+;; Removes the C-' binding from org mode so it can be used for flyspell.
 (add-hook 'org-mode-hook
           (lambda ()
                   (keymap-unset org-mode-map "C-'")))
@@ -106,21 +80,63 @@
 ;; Org
 (use-package org :ensure t)
 
-;; NOTE: Maybe worth configuring org-modern to improve the look of org-agenda.
-;; (use-package org-modern :ensure t)
-;; (with-eval-after-load 'org (global-org-modern-mode))
-
 ;; org-agenda
 (global-set-key (kbd "C-c a") 'org-agenda)
+(setq org-agenda-files (quote ("~/Documents/org/")))
 
-;; NOTE: Stores links that can be called in org files with C-c C-l.
+;; These keys are unbound based on the recommendation from Bernt Hansen.
+;; http://doc.norang.ca/org-mode.html#OrgFileStructure
+(add-hook 'org-mode-hook
+          (lambda ()
+            (keymap-unset org-mode-map "C-[")
+	    (keymap-unset org-mode-map "C-]")))
+
+;; org-capture
+(global-set-key (kbd "C-c c") 'org-capture)
+(setq org-directory "~/Documents/org/")
+(setq org-default-notes-file "~/Documents/org/refile.org")
+
+;; Keywords
+(setq org-use-fast-todo-selection t)
+
+(setq org-todo-keywords
+      (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+	      (sequence "WAITING(w)" "INACTIVE(i)" "|" "CANCELLED(c)" "MEETING"))))
+
+(setq org-todo-keyword-faces
+      (quote (("TODO" :foreground "salmon" :weight bold)
+	      ("NEXT" :foreground "deep sky blue" :weight bold)
+	      ("MEETING" :foreground "salmon" :weight bold)
+	      ("DONE" :foreground "green" :weight bold)
+	      ("WAITING" :foreground "orange" :weight bold)
+	      ("CANCELLED" :foreground "dim gray" :weight bold)
+	      ("INACTIVE" :foreground "dim gray" :weight bold))))
+
+;; Capture templates.
+(setq org-capture-templates
+      (quote (("t" "todo" entry (file org-default-notes-file)
+	       "* TODO %?\n%U\n%a\n")
+	      ("m" "Meeting" entry (file org-default-notes-file)
+	       "* MEETING with %? :MEETING:\n%U")
+	      ("i" "Idea" entry (file org-default-notes-file)
+	       "* %? :IDEA:\n%U"))))
+
+(setq org-refile-targets (quote ((nil :maxlevel . 9)
+                                 (org-agenda-files :maxlevel . 9))))
+
+;; Using a more readable, for me, time format. 
+(custom-set-variables
+ '(org-display-custom-times t)
+ '(org-time-stamp-custom-formats (quote ("%d/%m/%y %a" . "%d/%m/%y %a %H:%M"))))
+
+;; NOTE: Stores links that can be called in org files with C-c C-l. It is recommended to have this set to a keybinding, thus it is here. I have yet to use it for anything...
 (global-set-key (kbd "C-c l") 'org-store-link)
  
-;; org-mode notes
+;; Org roam config based on suggested config. For note taking.
 (use-package org-roam
   :ensure t
   :custom
-  (org-roam-directory (file-truename "~/Documents/org/Notes/"))
+  (org-roam-directory (file-truename "~/Documents/org/"))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert)
@@ -130,19 +146,9 @@
   :config
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (org-roam-db-autosync-mode)
-  ;; If using org-roam-protocol
-  (require 'org-roam-protocol))
+  (org-roam-db-autosync-mode))
 
 ;; Editing
-(use-package multiple-cursors
-  :ensure t
-  :config
-  (global-set-key (kbd "C-s-c C-s-c") 'mc/edit-lines)
-  (global-set-key (kbd "C->")         'mc/mark-next-like-this)
-  (global-set-key (kbd "C-<")         'mc/mark-previous-like-this)
-  (global-set-key (kbd "C-c C-<")     'mc/mark-all-like-this))
-
 (use-package move-text
   :ensure t
   :config
@@ -161,9 +167,7 @@
   (setq spacious-padding-subtle-mode-line
       `( :mode-line-active 'default
          :mode-line-inactive vertical-border)))
-;; Disabled for now as it causes visual bugs when using transparency.
-(spacious-padding-mode 0)
-
+(spacious-padding-mode 1)
 
 ;; Modeline customisation
 (use-package doom-modeline
@@ -174,7 +178,7 @@
 (use-package yasnippet
   :ensure t
   :config
-  (setq yas-snippet-dirs '("~/.emacs.snippets/"))
+  (setq yas-snippet-dirs '("~/.emacs.d/.emacs.snippets/"))
   (yas-global-mode 1))
 
 (use-package company
@@ -214,14 +218,9 @@
   :config
   (add-hook 'c++-mode-hook 'flycheck-mode))
 
-(use-package olivetti :ensure t)
-
 (global-set-key (kbd "C-z") 'eshell)
 
 ;; Appearance
-;; NOTE: This is now set in the early-init-file to prevent a change in size on startup.
-;; (add-to-list 'default-frame-alist '(font . "IosevkaTerm Nerd Font-12"))
-;; (set-face-attribute 'default t :font "IosevkaTerm Nerd Font-12")
 
 ;; Truncated lines. Trying to force line wrapping.
 (set-default 'truncate-lines nil)
@@ -232,23 +231,10 @@
       (lambda ()
         (toggle-truncate-lines nil) ))
 
-;; May want to enable whitespace at a later date so I am keeping this here.
-;; NOTE: When disabling whitespace mode buffers need to be updated to change the whitespaces.
-;; (global-whitespace-mode 0)
-;; (setq-default whitespace-style
-	      ;; '(face spaces empty tabs newline trailing space-mark tab-mark))
-
-;; Should create a keybinding or a hook to enable/disable line numbers in various modes (i.e. When editing files line numbers should be enabled. When reading files line numbers should be disabled.) When in a Python file for example line numbers and whitespace-mode should both be enabled.
 (global-display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
 
-;; Transparency
-;; Only works with a compositor enabled (e.g. Picom).
-(set-frame-parameter nil 'alpha-background 100)
-(add-to-list 'default-frame-alist '(alpha-background . 100))
-
 ;; Theme
-;; NOTE: When making changes to init.el sometimes init.elc (byte compiled version of init.el?) exists and overrides any changes. Delete this file and the changes will take effect. 
 ;; Puts the custom-file in /tmp. This removes the part the is automatically generated by Emacs and placed at the end of the init file. This prevents conflicts with custom and init configuration.
 (setq custom-file (make-temp-file "emacs-custom-"))
 
@@ -256,4 +242,4 @@
 (use-package gruber-darker-theme :ensure t)
 (load-theme 'gruber-darker t)
 ;; (global-set-key (kbd "C-x t") 'modus-themes-toggle)
-;; (load-theme 'modus-vivendi t)
+;; (load-theme 'modus-vivendi t

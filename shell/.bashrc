@@ -12,9 +12,8 @@ alias grep='grep --color=auto'
 PS1='[${USER^}@\h \W]\$ '
 
 export EDITOR='emacsclient -t'
-export VISUAL='emacsclient -c'
+export VISUAL='emacsclient -c -a emacs'
 
-alias emacs='emacsclient -t'
 alias vi='emacsclient -t'
 alias vim='emacsclient -t'
 alias nvim='emacsclient -t'
