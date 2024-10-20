@@ -51,4 +51,4 @@ https://github.com/bayasdev/envycontrol
 These files are a work in progress and may not necessarily work for your system at any given time.
 
 * TODO:
-** Literate init file with org mode.
+- Literate init file with org mode.
