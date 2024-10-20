@@ -80,9 +80,25 @@
 ;; Org
 (use-package org :ensure t)
 
+;; Set to "showeverything" to have all headings shown.
+(setq org-startup-folded t)
+
 ;; org-agenda
 (global-set-key (kbd "C-c a") 'org-agenda)
-(setq org-agenda-files (quote ("~/Documents/org/")))
+
+;; I am uncertain with the best method to add directories. For now I will take every org file in my Syncthing folder to be an agenda file. In the future it may prove best to just add the folders I need manually, for example:
+;; (setq org-agenda-files (quote ("~/Documents/org"
+;;                                "~/Projects"
+;;                                "~/etc")))
+
+;; NOTE: Need to re-evaluate the following in order for new org files to be added to the agenda files.
+(defun refresh-init ()
+  "Re-evaluate the Emacs init.el file."
+  (interactive)
+  (load-file user-init-file))
+(global-set-key (kbd "C-x C-r") 'refresh-init)
+
+(setq org-agenda-files (directory-files-recursively "~/Sync/" "\\.org$"))
 
 ;; These keys are unbound based on the recommendation from Bernt Hansen.
 ;; http://doc.norang.ca/org-mode.html#OrgFileStructure
@@ -93,24 +109,27 @@
 
 ;; org-capture
 (global-set-key (kbd "C-c c") 'org-capture)
-(setq org-directory "~/Documents/org/")
-(setq org-default-notes-file "~/Documents/org/refile.org")
+(setq org-directory "~/Sync/")
+(setq org-default-notes-file "~/Sync/org/refile.org")
 
 ;; Keywords
 (setq org-use-fast-todo-selection t)
 
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-	      (sequence "WAITING(w)" "INACTIVE(i)" "|" "CANCELLED(c)" "MEETING"))))
+	      (sequence "WAITING(w)" "INACTIVE(i)" "|" "CANCELLED(c)")
+	      (type "PROJECT(p)" "MEETING(m)"))))
 
 (setq org-todo-keyword-faces
       (quote (("TODO" :foreground "salmon" :weight bold)
 	      ("NEXT" :foreground "deep sky blue" :weight bold)
+	      ("PROJECT" :foreground "yellow" :weight bold)
 	      ("MEETING" :foreground "salmon" :weight bold)
 	      ("DONE" :foreground "green" :weight bold)
 	      ("WAITING" :foreground "orange" :weight bold)
 	      ("CANCELLED" :foreground "dim gray" :weight bold)
-	      ("INACTIVE" :foreground "dim gray" :weight bold))))
+	      ("INACTIVE" :foreground "dim gray" :weight bold)
+	      )))
 
 ;; Capture templates.
 (setq org-capture-templates
@@ -118,6 +137,8 @@
 	       "* TODO %?\n%U\n%a\n")
 	      ("m" "Meeting" entry (file org-default-notes-file)
 	       "* MEETING with %? :MEETING:\n%U")
+	      ("p" "Project" entry (file org-default-notes-file)
+	       "* PROJECT %?")
 	      ("i" "Idea" entry (file org-default-notes-file)
 	       "* %? :IDEA:\n%U"))))
 
@@ -129,7 +150,114 @@
  '(org-display-custom-times t)
  '(org-time-stamp-custom-formats (quote ("%d/%m/%y %a" . "%d/%m/%y %a %H:%M"))))
 
+;; Tags for when in states other than TODO and NEXT as these don't need to be visible.
+;; NOTE: Waiting and inactive tags can only be removed if moving to todo, next, or done.
+(setq org-todo-state-tags-triggers
+      (quote (("CANCELLED" ("CANCELLED" . t))
+	      ("WAITING" ("WAITING" . t))
+	      ("INACTIVE" ("WAITING" . t) ("INACTIVE" . t))
+	      (done ("WAITING") ("INACTIVE"))
+	      ("TODO" ("WAITING") ("CANCELLED") ("INACTIVE"))
+	      ("NEXT" ("WAITING") ("CANCELLED") ("INACTIVE"))
+	      ("DONE" ("WAITING") ("CANCELLED") ("INACTIVE"))
+	      ("PROJECT" ("WAITING") ("CANCELLED") ("INACTIVE")))))
+
+;; These functions were necessary as the "org-agenda-filter-by-tag" function showed days in the agenda view even if they had no items.
+;; Functions from:
+;; https://stackoverflow.com/questions/10074016/org-mode-filter-on-tag-in-agenda-view/33444799#33444799
+(defun my/org-match-at-point-p (match)
+  "Return non-nil if headline at point matches MATCH.
+Here MATCH is a match string of the same format used by
+`org-tags-view'."
+  (funcall (cdr (org-make-tags-matcher match))
+           (org-get-todo-state)
+           (org-get-tags-at)
+           (org-reduced-level (org-current-level))))
+
+(defun my/org-agenda-skip-without-match (match)
+  "Skip current headline unless it matches MATCH.
+
+Return nil if headline containing point matches MATCH (which
+should be a match string of the same format used by
+`org-tags-view').  If headline does not match, return the
+position of the next headline in current buffer.
+
+Intended for use with `org-agenda-skip-function', where this will
+skip exactly those headlines that do not match." 
+  (save-excursion
+    (unless (org-at-heading-p) (org-back-to-heading)) 
+    (let ((next-headline (save-excursion
+                           (or (outline-next-heading) (point-max)))))
+      (if (my/org-match-at-point-p match) nil next-headline))))
+
+
+;; Custom agenda views. Good luck understanding this...
+;; TODO Add documentation for this section specifically! <2024-10-18 Fri>
+(setq org-agenda-custom-commands
+      (quote ((" " "Agenda"
+	       ((agenda ""
+			;; Press j to go to a specific date to see what items are scheduled.
+		      ((org-agenda-overriding-header "Today:")
+		       (org-agenda-span 1)
+		       (org-deadline-warning-days 0)))
+		(tags "REFILE"
+		      ((org-agenda-overriding-header "Refile:")
+		       (org-tags-match-list-sublevels nil)))
+		(agenda ""
+		      ((org-agenda-start-on-weekday nil)
+		       (org-agenda-span 3)
+		       (org-agenda-show-all-dates nil)
+		       (org-deadline-warning-days 0)
+		       (org-agenda-start-day "+1d")
+		       (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE")))
+		       (org-agenda-overriding-header "Upcoming (+3d)")))
+		(agenda ""
+		      ((org-agenda-start-on-weekday nil)
+		       (org-agenda-span 14)
+		       (org-agenda-show-all-dates nil)
+		       (org-deadline-warning-days 0)
+		       (org-agenda-start-day "+4d")
+		       ;; (org-agenda-block-separator nil)
+		       (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))
+		       (org-agenda-overriding-header "Upcoming Deadlines (+14d):")))
+		(tags-todo "-PROJECT-DONE-CANCELLED-WAITING-INACTIVE"
+		      ((org-agenda-skip-function '(org-agenda-skip-if nil '(timestamp)))
+		       (org-agenda-overriding-header "Unscheduled Tasks:")))
+		(tags "WAITING"
+		      (
+		       ;; (org-agenda-skip-function '(org-agenda-skip-if nil '(timestamp)))
+		       (org-agenda-overriding-header "Waiting and Inactive Tasks:")))
+		(todo "PROJECT"
+		      ((org-tags-match-list-sublevels nil)
+		       (org-agenda-overriding-header "Projects:")))
+		))
+	      ("p" "Projects"
+	       ((agenda ""
+		      ((org-agenda-overriding-header "Deadlines and Scheduled Events:")
+		       (org-deadline-warning-days 0)
+		       (org-agenda-span 'month 2)
+		       (org-agenda-skip-function '(my/org-agenda-skip-without-match "+PROJECT"))
+		       (org-agenda-show-all-dates nil)
+		       (org-agenda-start-on-weekday nil)
+		       (org-agenda-time-grid nil)
+		       (org-agenda-start-day "+0d")))
+		;; (todo "PROJECT"
+		;;       ((org-tags-match-list-sublevels nil)
+		;;        (org-agenda-overriding-header "Projects:")))
+		(tags "PROJECT"
+		      ((org-agenda-overriding-header "Projects:")
+		       (org-tags-match-list-sublevels 'indented)
+		       (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE" "CANCELLED")))
+		       ))
+		))
+)))
+
+;; What happens when org agenda starts and stops:
+(setq org-agenda-window-setup 'only-window)
+(setq org-agenda-restore-windows-after-quit t)
+
 ;; NOTE: Stores links that can be called in org files with C-c C-l. It is recommended to have this set to a keybinding, thus it is here. I have yet to use it for anything...
+;; Maybe can be used with pdftools to have a link for notes on a particular point.
 (global-set-key (kbd "C-c l") 'org-store-link)
  
 ;; Org roam config based on suggested config. For note taking.
@@ -147,6 +275,19 @@
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-mode))
+
+;; pdf-tools
+(use-package pdf-tools :ensure t)
+(pdf-tools-install)
+
+;; Disable line numbers only when in pdf view mode.
+;; NOTE: I think this may be built in now?
+;; https://github.com/minad/consult/discussions/853
+(require 'display-line-numbers)
+(defun display-line-numbers--turn-on ()
+  "Turn on `display-line-numbers-mode'."
+  (unless (or (minibufferp) (eq major-mode 'pdf-view-mode))
+    (display-line-numbers-mode)))
 
 ;; Editing
 (use-package move-text
@@ -242,4 +383,4 @@
 (use-package gruber-darker-theme :ensure t)
 (load-theme 'gruber-darker t)
 ;; (global-set-key (kbd "C-x t") 'modus-themes-toggle)
-;; (load-theme 'modus-vivendi t
+;; (load-theme 'modus-vivendi t)
