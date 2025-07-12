@@ -1,11 +1,15 @@
 [xfdesktop-version-4.10.3+-rcfile_format]
 4.10.3+=true
 
-[/]
-row=0
+[86B2EFD1B2EFC431]
+row=1
+col=0
+
+[65FF-FC54]
+row=2
 col=0
 
 [/home/jacob]
-row=1
+row=0
 col=0
 

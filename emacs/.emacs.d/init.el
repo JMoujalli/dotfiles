@@ -1,5 +1,17 @@
-;; Package Repositories
+;; Use-package setup
+(require 'package)
+(add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(eval-and-compile
+  (setq use-package-always-ensure t
+        use-package-expand-minimally t))
+
+(setq package-install-upgrade-built-in t)
 
 ;; Emacs backups
 (setq make-backup-files nil)
@@ -44,7 +56,7 @@
 ;; Spell Check
 ;; Need to install hunspell and en_AU dictionary for hunspell (sudo pacman -S hunspell hunspell-en_AU).
 (setq flyspell-issue-message-flag nil)
-(setq ispell-program-name "hunspell")
+;; (setq ispell-program-name "hunspell")
 (setq ispell-dictionary "en_AU")
 
 (defun flyspell-toggle ()
@@ -276,10 +288,6 @@ skip exactly those headlines that do not match."
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-mode))
 
-;; pdf-tools
-(use-package pdf-tools :ensure t)
-(pdf-tools-install)
-
 ;; Disable line numbers only when in pdf view mode.
 ;; NOTE: I think this may be built in now?
 ;; https://github.com/minad/consult/discussions/853
@@ -300,15 +308,6 @@ skip exactly those headlines that do not match."
   "Delete all other buffers."
   (interactive)
   (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
-
-;; If spacious-padding is not high enough in the init file there are visual bugs. Must be before all those below this position.
-(use-package spacious-padding
-  :ensure t
-  :config
-  (setq spacious-padding-subtle-mode-line
-      `( :mode-line-active 'default
-         :mode-line-inactive vertical-border)))
-(spacious-padding-mode 1)
 
 ;; Modeline customisation
 (use-package doom-modeline
