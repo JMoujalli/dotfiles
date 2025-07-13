@@ -288,15 +288,6 @@ skip exactly those headlines that do not match."
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-mode))
 
-;; Disable line numbers only when in pdf view mode.
-;; NOTE: I think this may be built in now?
-;; https://github.com/minad/consult/discussions/853
-(require 'display-line-numbers)
-(defun display-line-numbers--turn-on ()
-  "Turn on `display-line-numbers-mode'."
-  (unless (or (minibufferp) (eq major-mode 'pdf-view-mode))
-    (display-line-numbers-mode)))
-
 ;; Editing
 (use-package move-text
   :ensure t

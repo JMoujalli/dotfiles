@@ -6,8 +6,8 @@
     <value type="int" value="1"/>
     <property name="dark-mode" type="bool" value="true"/>
     <property name="panel-1" type="empty">
-      <property name="position" type="string" value="p=6;x=0;y=0"/>
-      <property name="length" type="uint" value="100"/>
+      <property name="position" type="string" value="p=8;x=960;y=1066"/>
+      <property name="length" type="double" value="100"/>
       <property name="position-locked" type="bool" value="true"/>
       <property name="icon-size" type="uint" value="16"/>
       <property name="size" type="uint" value="26"/>
@@ -30,6 +30,7 @@
         <value type="int" value="12"/>
         <value type="int" value="18"/>
       </property>
+      <property name="mode" type="uint" value="0"/>
     </property>
   </property>
   <property name="plugins" type="empty">
@@ -55,6 +56,8 @@
     <property name="plugin-6" type="string" value="systray">
       <property name="square-icons" type="bool" value="true"/>
       <property name="known-legacy-items" type="array">
+        <value type="string" value="ibus panel"/>
+        <value type="string" value="wi-fi network connection “wifi-2495-5g” active: wifi-2495-5g (63%)"/>
         <value type="string" value="wi-fi network connection “wifi-2495-5g” active: wifi-2495-5g (60%)"/>
         <value type="string" value="wi-fi network connection “wifi-2495-5g” active: wifi-2495-5g (56%)"/>
         <value type="string" value="wi-fi network connection “wifi-2495-5g” active: wifi-2495-5g (61%)"/>
@@ -67,7 +70,7 @@
     <property name="plugin-8" type="string" value="pulseaudio">
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
       <property name="show-notifications" type="bool" value="true"/>
-      <property name="mpris-players" type="string" value="firefox.instance_1_143;firefox.instance_1_152;firefox.instance_1_172;firefox.instance_1_48;firefox.instance_1_81"/>
+      <property name="mpris-players" type="string" value="firefox.instance_1_143;firefox.instance_1_152;firefox.instance_1_172;firefox.instance_1_48;firefox.instance_1_50;firefox.instance_1_81"/>
     </property>
     <property name="plugin-9" type="string" value="power-manager-plugin"/>
     <property name="plugin-10" type="string" value="notification-plugin"/>
@@ -83,17 +86,17 @@
     </property>
     <property name="plugin-7" type="string" value="launcher">
       <property name="items" type="array">
-        <value type="string" value="17522959872.desktop"/>
+        <value type="string" value="17523652883.desktop"/>
       </property>
     </property>
     <property name="plugin-15" type="string" value="launcher">
       <property name="items" type="array">
-        <value type="string" value="17522960084.desktop"/>
+        <value type="string" value="17523653605.desktop"/>
       </property>
     </property>
     <property name="plugin-16" type="string" value="launcher">
       <property name="items" type="array">
-        <value type="string" value="17522959993.desktop"/>
+        <value type="string" value="17523653696.desktop"/>
       </property>
     </property>
     <property name="plugin-17" type="string" value="separator"/>
@@ -101,10 +104,11 @@
       <property name="digital-layout" type="uint" value="3"/>
       <property name="tooltip-format" type="string" value="%x"/>
       <property name="digital-time-font" type="string" value="Sans 10"/>
+      <property name="mode" type="uint" value="2"/>
     </property>
     <property name="plugin-19" type="string" value="launcher">
       <property name="items" type="array">
-        <value type="string" value="17523031545.desktop"/>
+        <value type="string" value="17523653434.desktop"/>
       </property>
     </property>
   </property>
