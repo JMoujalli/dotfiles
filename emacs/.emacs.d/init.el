@@ -92,6 +92,10 @@
 ;; Org
 (use-package org :ensure t)
 
+;; Fix LaTeX compiler options
+;; (setq org-latex-pdf-process (quote ("texi2dvi -p -b -V %f")))
+(setq org-latex-pdf-process (list "latexmk -f -pdf %f"))
+
 ;; Set to "showeverything" to have all headings shown.
 (setq org-startup-folded t)
 

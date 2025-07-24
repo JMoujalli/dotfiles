@@ -56,6 +56,11 @@
     <property name="plugin-6" type="string" value="systray">
       <property name="square-icons" type="bool" value="true"/>
       <property name="known-legacy-items" type="array">
+        <value type="string" value="no network connection"/>
+        <value type="string" value="wi-fi network connection “wifi-2495-5g” active: wifi-2495-5g (65%)"/>
+        <value type="string" value="wi-fi network connection “wifi-2495-5g” active: wifi-2495-5g (59%)"/>
+        <value type="string" value="wi-fi network connection “wifi-2495-5g” active: wifi-2495-5g (57%)"/>
+        <value type="string" value="wi-fi network connection “wifi-2495-5g” active: wifi-2495-5g (58%)"/>
         <value type="string" value="ibus panel"/>
         <value type="string" value="wi-fi network connection “wifi-2495-5g” active: wifi-2495-5g (63%)"/>
         <value type="string" value="wi-fi network connection “wifi-2495-5g” active: wifi-2495-5g (60%)"/>
@@ -63,6 +68,7 @@
         <value type="string" value="wi-fi network connection “wifi-2495-5g” active: wifi-2495-5g (61%)"/>
       </property>
       <property name="known-items" type="array">
+        <value type="string" value="vlc"/>
         <value type="string" value="obs"/>
         <value type="string" value="zoom"/>
       </property>
@@ -70,7 +76,7 @@
     <property name="plugin-8" type="string" value="pulseaudio">
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
       <property name="show-notifications" type="bool" value="true"/>
-      <property name="mpris-players" type="string" value="firefox.instance_1_143;firefox.instance_1_152;firefox.instance_1_172;firefox.instance_1_48;firefox.instance_1_50;firefox.instance_1_81"/>
+      <property name="mpris-players" type="string" value="firefox.instance_1_108;firefox.instance_1_143;firefox.instance_1_152;firefox.instance_1_172;firefox.instance_1_251;firefox.instance_1_47;firefox.instance_1_48;firefox.instance_1_50;firefox.instance_1_57;firefox.instance_1_58;firefox.instance_1_81;vlc"/>
     </property>
     <property name="plugin-9" type="string" value="power-manager-plugin"/>
     <property name="plugin-10" type="string" value="notification-plugin"/>
