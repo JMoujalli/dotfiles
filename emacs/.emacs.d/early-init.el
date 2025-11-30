@@ -26,4 +26,4 @@
 (show-paren-mode 1)
 
 ;; Start maximized
-;; (add-to-list 'initial-frame-alist '(fullscreen . maximized))
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))

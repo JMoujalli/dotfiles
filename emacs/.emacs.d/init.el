@@ -97,7 +97,7 @@
 (setq org-latex-pdf-process (list "latexmk -f -pdf %f"))
 
 ;; Set to "showeverything" to have all headings shown.
-(setq org-startup-folded t)
+;; (setq org-startup-folded showeverything)
 
 ;; org-agenda
 (global-set-key (kbd "C-c a") 'org-agenda)
@@ -358,8 +358,8 @@ skip exactly those headlines that do not match."
 ;; Appearance
 
 ;; Truncated lines. Trying to force line wrapping.
-(set-default 'truncate-lines nil)
-(setq truncate-partial-width-windows nil)
+;; (set-default 'truncate-lines nil)
+;; (setq truncate-partial-width-windows nil)
 
 ;; NOTE: org-mode files prevent changing line truncation settings. This is so that tables are not displayed incorrectly. I am turning this off because I don't use tables yet.
 (add-hook 'org-mode-hook
@@ -374,7 +374,7 @@ skip exactly those headlines that do not match."
 (setq custom-file (make-temp-file "emacs-custom-"))
 
 (setq custom-safe-themes t)
-(use-package gruber-darker-theme :ensure t)
-(load-theme 'gruber-darker t)
-;; (global-set-key (kbd "C-x t") 'modus-themes-toggle)
-;; (load-theme 'modus-vivendi t)
+;; (use-package gruber-darker-theme :ensure t)
+;; (load-theme 'gruber-darker t)
+(global-set-key (kbd "C-x t") 'modus-themes-toggle)
+(load-theme 'modus-vivendi t)
