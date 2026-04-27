@@ -24,7 +24,8 @@
 ;; Start Emacs in a scratch buffer.
 (setq inhibit-splash-screen t)
 
-;; Elfeed for RSS feeds and YouTube videos. Great for keeping up to date without the google data mining. 
+;; Elfeed for RSS feeds and YouTube videos. Great for keeping up to date without the google data mining.
+;; Maybe want to configure elfeed-dashboard to help with managing what is being looked at. May also want to add elfeed-goodies to get split pane setup.
 (global-set-key (kbd "C-x w") 'elfeed)
 (use-package elfeed
   :ensure t
@@ -37,7 +38,7 @@
   :after elfeed
   :config
   (elfeed-org)
-  (setq rmh-elfeed-org-files (list "~/elfeed.org")))
+  (setq rmh-elfeed-org-files (list "~/Documents/Agenda/elfeed.org")))
 
 (defun mpv-play-url (url &rest args)
   "Play the given URL in MPV."
@@ -97,9 +98,10 @@
 (setq org-latex-pdf-process (list "latexmk -f -pdf %f"))
 
 ;; Set to "showeverything" to have all headings shown.
-;; (setq org-startup-folded showeverything)
+(setq org-startup-folded showeverything)
 
 ;; org-agenda
+;; This looks good. Probably just remove the projects section, this never worked well. Focus on the current day, upcoming tasks, deadlines, and general tasks. Should also add facilities to time how much effort is spent on a task on any particular day.
 (global-set-key (kbd "C-c a") 'org-agenda)
 
 ;; I am uncertain with the best method to add directories. For now I will take every org file in my Syncthing folder to be an agenda file. In the future it may prove best to just add the folders I need manually, for example:
@@ -114,7 +116,7 @@
   (load-file user-init-file))
 (global-set-key (kbd "C-x C-r") 'refresh-init)
 
-(setq org-agenda-files (directory-files-recursively "~/Sync/" "\\.org$"))
+(setq org-agenda-files (directory-files-recursively "~/Documents/Agenda/" "\\.org$"))
 
 ;; These keys are unbound based on the recommendation from Bernt Hansen.
 ;; http://doc.norang.ca/org-mode.html#OrgFileStructure
@@ -125,8 +127,8 @@
 
 ;; org-capture
 (global-set-key (kbd "C-c c") 'org-capture)
-(setq org-directory "~/Sync/")
-(setq org-default-notes-file "~/Sync/org/refile.org")
+(setq org-directory "~/Documents/")
+(setq org-default-notes-file "~/Documents/Agenda/refile.org")
 
 ;; Keywords
 (setq org-use-fast-todo-selection t)
@@ -277,6 +279,7 @@ skip exactly those headlines that do not match."
 (global-set-key (kbd "C-c l") 'org-store-link)
  
 ;; Org roam config based on suggested config. For note taking.
+;; NOTE: Have not used. Probably want to find a better solution for my note taking needs than the deafult. I think that Prot's "Denote" package might provide a better solution.
 (use-package org-roam
   :ensure t
   :custom
@@ -305,6 +308,7 @@ skip exactly those headlines that do not match."
   (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
 
 ;; Modeline customisation
+;; NOTE: Probably want to spend some more time getting this looking good.
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1))
@@ -347,11 +351,6 @@ skip exactly those headlines that do not match."
 
 ;; Code
 (require 'compile)
-
-(use-package flycheck
-  :ensure t
-  :config
-  (add-hook 'c++-mode-hook 'flycheck-mode))
 
 (global-set-key (kbd "C-z") 'eshell)
 
