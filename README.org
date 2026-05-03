@@ -25,30 +25,11 @@ NOTE: The dotfiles directory doesn't need to be in the home directory as long as
 - emacs (>=29 preferred)
   * Run "systemctl --user enable --now emacs" for emacs daemon
 - i3
-- xrandr (xorg-xrandr on Arch Linux)
+- xrandr
 - arandr
-- msmtp
-- mbsync (isync)
-- notmuch
-
-* Graphics
-If using laptop with discrete GPU (My ThinkPad T480) then you should, in order to improve battery life, disable it.
-
-Install:
-- bumblebee (https://wiki.archlinux.org/title/Bumblebee)
-- bbswitch
-
-Simply installing bumblebee and bbswitch should be enough to disable the Nvidia GPU. Test by running:
-
-#+BEGIN_SRC
-  cat /proc/acpi/bbswitch
-#+END_SRC
-
-NOTE: I am also experimenting with EnvyControl.
-https://github.com/bayasdev/envycontrol
 
 * Warning
 These files are a work in progress and may not necessarily work for your system at any given time.
 
 * TODO:
-- Literate init file with org mode.
+- Literate config files.
