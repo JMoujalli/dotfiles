@@ -1,11 +1,11 @@
 #!/bin/sh
 
-choices="Suspend\nShutdown\nReboot"
+choices="Lock\nShutdown\nReboot"
 
-chosen=$(echo -e "$choices" | dmenu -i)
+chosen=$(echo "$choices" | dmenu -i)
 
 case "$chosen" in
-    Suspend) systemctl suspend ;;
+    Lock) i3lock-fancy -g ;;
     Shutdown) shutdown now ;;
     Reboot) reboot ;;
 esac

@@ -2,8 +2,8 @@
 (setq initial-frame-alist '((background-color . "#181818")))
 (setq mode-line-format nil)
 
-(add-to-list 'default-frame-alist '(font . "IosevkaTerm Nerd Font-12"))
-(set-face-attribute 'default t :font "IosevkaTerm Nerd Font-12")
+(add-to-list 'default-frame-alist '(font . "Iosevka Nerd Font-12"))
+(set-face-attribute 'default t :font "Iosevka Nerd Font-12")
 
 ;; WARNING: Change the following at your own risk.
 (defvar old-file-name-handler file-name-handler-alist)

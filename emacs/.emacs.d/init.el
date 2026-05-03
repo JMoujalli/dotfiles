@@ -98,7 +98,7 @@
 (setq org-latex-pdf-process (list "latexmk -f -pdf %f"))
 
 ;; Set to "showeverything" to have all headings shown.
-(setq org-startup-folded showeverything)
+;; (setq org-startup-folded showeverything)
 
 ;; org-agenda
 ;; This looks good. Probably just remove the projects section, this never worked well. Focus on the current day, upcoming tasks, deadlines, and general tasks. Should also add facilities to time how much effort is spent on a task on any particular day.
