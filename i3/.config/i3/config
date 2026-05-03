@@ -32,6 +32,9 @@ tiling_drag modifier titlebar
 # bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Return exec alacritty
 
+# start file browswer
+bindsym $mod+t exec thunar
+
 # kill focused window
 bindsym $mod+Shift+q kill
 
@@ -68,8 +71,7 @@ bindsym $mod+Shift+Right move right
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+t layout tabbed
+bindsym $mod+s layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
@@ -168,7 +170,6 @@ bar {
 # exec --no-startup-id nm-applet
 
 # i3 setup commands.
-workspace_layout stacked
 focus_follows_mouse no
 default_border none
 default_floating_border none
