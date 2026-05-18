@@ -9,7 +9,7 @@ order += "volume master"
 order += "time"
 
 time {
-     format = "%a, %d %b %Y %H:%M"
+     format = "%a, %d %b %Y %H:%M "
 }
 
 volume master {
