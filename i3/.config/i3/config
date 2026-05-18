@@ -74,7 +74,7 @@ bindsym $mod+f fullscreen toggle
 bindsym $mod+s layout tabbed
 bindsym $mod+e layout toggle split
 
-
+workspace_layout tabbed
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -198,19 +198,12 @@ exec --no-startup-id picom --backend glx --daemon
 # Shutdown script.
 bindsym $mod+shift+x exec "~/.config/i3/logout.sh"
 
-# xrandr dpi settings
-# NOTE: This was designed to adjust the settings of the monitor dpi. Should probably change xft.dpi only. Need to play with this more. 
-exec_always --no-startup-id "~/.config/i3/saveddpi.sh"
-
 # Screen layout select script.
 exec_always --no-startup-id "~/.config/i3/screenlayout.sh"
 bindsym $mod+shift+p exec "~/.config/i3/screenselect.sh"
 
 # Launching into emacs.
 bindsym $mod+w exec --no-startup-id emacsclient -c
-
-exec_always --no-startup-id i3-msg 'workspace $ws9; layout tabbed'
-exec_always --no-startup-id i3-msg 'workspace $ws10; layout tabbed'
 
 # Restart i3 so all changes take effect
 exec --no-startup-id i3-msg restart
