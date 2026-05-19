@@ -54,26 +54,32 @@
       '(("youtu\\.?be.*\\.xml" . browse-url-default-browser)  ; Open YouTube RSS feeds in the browser
         ("youtu\\.?be" . mpv-play-url)))                      ; Use mpv-play-url for other YouTube URLs
 
-;; Spell Check
-;; Need to install hunspell and en_AU dictionary for hunspell (sudo pacman -S hunspell hunspell-en_AU).
-(setq flyspell-issue-message-flag nil)
-;; (setq ispell-program-name "hunspell")
-(setq ispell-dictionary "en_AU")
+;; Spelling and Grammar check
+;; To have langtool working the .jar needs to be downloaded and Java installed.
+(use-package langtool
+  :ensure t
+  :config
+  (setq langtool-language-tool-jar "~/dotfiles/emacs/.emacs.d/LanguageTool-6.6/languagetool-commandline.jar")
+  (setq langtool-default-language "en-AU")
+  (setq langtool-mother-tongue "en"))
 
-(defun flyspell-toggle ()
-      "Turn Flyspell on if it is off, or off if it is on. No distinction is made between code and text."
-      (interactive)
-      (if (symbol-value flyspell-mode)
-	  (progn ; flyspell is on, turn it off
-	    (message "Flyspell off")
-	    (flyspell-mode -1))
-	  ; else - flyspell is off, turn it on
-	(flyspell-mode 1)
-	(flyspell-buffer)))
+;; Buffer local variable to identify whether langtool is on or off.
+(defvar-local langtool-value nil)
 
-(global-set-key (kbd "C-'") 'flyspell-toggle)
+;; Function to toggle langtool on or off.
+(defun langtool-toggle ()
+  "Toggle langtool on or off. No distinction is made between code and text"
+  (interactive)
+  (if langtool-value
+      (progn ; Langtool is on. Turn it off.
+	(setq langtool-value nil)
+	(langtool-check-done))
+    (setq-local langtool-value 1)
+    (langtool-check)))
 
-;; Removes the C-' binding from org mode so it can be used for flyspell.
+(global-set-key (kbd "C-'") 'langtool-toggle)
+
+;; Removes the C-' binding from org mode so it can be used for langtool.
 (add-hook 'org-mode-hook
           (lambda ()
                   (keymap-unset org-mode-map "C-'")))
