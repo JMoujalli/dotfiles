@@ -107,13 +107,7 @@
 ;; (setq org-startup-folded showeverything)
 
 ;; org-agenda
-;; This looks good. Probably just remove the projects section, this never worked well. Focus on the current day, upcoming tasks, deadlines, and general tasks. Should also add facilities to time how much effort is spent on a task on any particular day.
 (global-set-key (kbd "C-c a") 'org-agenda)
-
-;; I am uncertain with the best method to add directories. For now I will take every org file in my Syncthing folder to be an agenda file. In the future it may prove best to just add the folders I need manually, for example:
-;; (setq org-agenda-files (quote ("~/Documents/org"
-;;                                "~/Projects"
-;;                                "~/etc")))
 
 ;; NOTE: Need to re-evaluate the following in order for new org files to be added to the agenda files.
 (defun refresh-init ()
@@ -123,13 +117,6 @@
 (global-set-key (kbd "C-x C-r") 'refresh-init)
 
 (setq org-agenda-files (directory-files-recursively "~/Documents/Agenda/" "\\.org$"))
-
-;; These keys are unbound based on the recommendation from Bernt Hansen.
-;; http://doc.norang.ca/org-mode.html#OrgFileStructure
-(add-hook 'org-mode-hook
-          (lambda ()
-            (keymap-unset org-mode-map "C-[")
-	    (keymap-unset org-mode-map "C-]")))
 
 ;; org-capture
 (global-set-key (kbd "C-c c") 'org-capture)
@@ -142,12 +129,11 @@
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
 	      (sequence "WAITING(w)" "INACTIVE(i)" "|" "CANCELLED(c)")
-	      (type "PROJECT(p)" "MEETING(m)"))))
+	      (type "MEETING(m)"))))
 
 (setq org-todo-keyword-faces
       (quote (("TODO" :foreground "salmon" :weight bold)
 	      ("NEXT" :foreground "deep sky blue" :weight bold)
-	      ("PROJECT" :foreground "yellow" :weight bold)
 	      ("MEETING" :foreground "salmon" :weight bold)
 	      ("DONE" :foreground "green" :weight bold)
 	      ("WAITING" :foreground "orange" :weight bold)
@@ -160,11 +146,7 @@
       (quote (("t" "todo" entry (file org-default-notes-file)
 	       "* TODO %?\n%U\n%a\n")
 	      ("m" "Meeting" entry (file org-default-notes-file)
-	       "* MEETING with %? :MEETING:\n%U")
-	      ("p" "Project" entry (file org-default-notes-file)
-	       "* PROJECT %?")
-	      ("i" "Idea" entry (file org-default-notes-file)
-	       "* %? :IDEA:\n%U"))))
+	       "* MEETING with %? :MEETING:\n%U"))))
 
 (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                  (org-agenda-files :maxlevel . 9))))
@@ -183,45 +165,15 @@
 	      (done ("WAITING") ("INACTIVE"))
 	      ("TODO" ("WAITING") ("CANCELLED") ("INACTIVE"))
 	      ("NEXT" ("WAITING") ("CANCELLED") ("INACTIVE"))
-	      ("DONE" ("WAITING") ("CANCELLED") ("INACTIVE"))
-	      ("PROJECT" ("WAITING") ("CANCELLED") ("INACTIVE")))))
-
-;; These functions were necessary as the "org-agenda-filter-by-tag" function showed days in the agenda view even if they had no items.
-;; Functions from:
-;; https://stackoverflow.com/questions/10074016/org-mode-filter-on-tag-in-agenda-view/33444799#33444799
-(defun my/org-match-at-point-p (match)
-  "Return non-nil if headline at point matches MATCH.
-Here MATCH is a match string of the same format used by
-`org-tags-view'."
-  (funcall (cdr (org-make-tags-matcher match))
-           (org-get-todo-state)
-           (org-get-tags-at)
-           (org-reduced-level (org-current-level))))
-
-(defun my/org-agenda-skip-without-match (match)
-  "Skip current headline unless it matches MATCH.
-
-Return nil if headline containing point matches MATCH (which
-should be a match string of the same format used by
-`org-tags-view').  If headline does not match, return the
-position of the next headline in current buffer.
-
-Intended for use with `org-agenda-skip-function', where this will
-skip exactly those headlines that do not match." 
-  (save-excursion
-    (unless (org-at-heading-p) (org-back-to-heading)) 
-    (let ((next-headline (save-excursion
-                           (or (outline-next-heading) (point-max)))))
-      (if (my/org-match-at-point-p match) nil next-headline))))
-
+	      ("DONE" ("WAITING") ("CANCELLED") ("INACTIVE")))))
 
 ;; Custom agenda views. Good luck understanding this...
 ;; TODO Add documentation for this section specifically! <2024-10-18 Fri>
 (setq org-agenda-custom-commands
       (quote ((" " "Agenda"
 	       ((agenda ""
-			;; Press j to go to a specific date to see what items are scheduled.
-		      ((org-agenda-overriding-header "Today:")
+		       ;; Press j to go to a specific date to see what items are scheduled.
+		      ((org-agenda-overriding-header "")
 		       (org-agenda-span 1)
 		       (org-deadline-warning-days 0)))
 		(tags "REFILE"
@@ -229,50 +181,20 @@ skip exactly those headlines that do not match."
 		       (org-tags-match-list-sublevels nil)))
 		(agenda ""
 		      ((org-agenda-start-on-weekday nil)
-		       (org-agenda-span 3)
+		       (org-agenda-span 365)
+		       (org-agenda-show-future-repeats nil)
 		       (org-agenda-show-all-dates nil)
 		       (org-deadline-warning-days 0)
 		       (org-agenda-start-day "+1d")
 		       (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE")))
-		       (org-agenda-overriding-header "Upcoming (+3d)")))
-		(agenda ""
-		      ((org-agenda-start-on-weekday nil)
-		       (org-agenda-span 14)
-		       (org-agenda-show-all-dates nil)
-		       (org-deadline-warning-days 0)
-		       (org-agenda-start-day "+4d")
-		       ;; (org-agenda-block-separator nil)
-		       (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))
-		       (org-agenda-overriding-header "Upcoming Deadlines (+14d):")))
-		(tags-todo "-PROJECT-DONE-CANCELLED-WAITING-INACTIVE"
+		       (org-agenda-overriding-header "Scheduled Tasks and Deadlines:")))
+		(tags-todo "-DONE-CANCELLED-WAITING-INACTIVE"
 		      ((org-agenda-skip-function '(org-agenda-skip-if nil '(timestamp)))
 		       (org-agenda-overriding-header "Unscheduled Tasks:")))
 		(tags "WAITING"
 		      (
-		       ;; (org-agenda-skip-function '(org-agenda-skip-if nil '(timestamp)))
+		       (org-agenda-skip-function '(org-agenda-skip-if nil '(timestamp)))
 		       (org-agenda-overriding-header "Waiting and Inactive Tasks:")))
-		(todo "PROJECT"
-		      ((org-tags-match-list-sublevels nil)
-		       (org-agenda-overriding-header "Projects:")))
-		))
-	      ("p" "Projects"
-	       ((agenda ""
-		      ((org-agenda-overriding-header "Deadlines and Scheduled Events:")
-		       (org-deadline-warning-days 0)
-		       (org-agenda-span 'month 2)
-		       (org-agenda-skip-function '(my/org-agenda-skip-without-match "+PROJECT"))
-		       (org-agenda-show-all-dates nil)
-		       (org-agenda-start-on-weekday nil)
-		       (org-agenda-time-grid nil)
-		       (org-agenda-start-day "+0d")))
-		;; (todo "PROJECT"
-		;;       ((org-tags-match-list-sublevels nil)
-		;;        (org-agenda-overriding-header "Projects:")))
-		(tags "PROJECT"
-		      ((org-agenda-overriding-header "Projects:")
-		       (org-tags-match-list-sublevels 'indented)
-		       (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE" "CANCELLED")))
-		       ))
 		))
 )))
 
@@ -281,25 +203,7 @@ skip exactly those headlines that do not match."
 (setq org-agenda-restore-windows-after-quit t)
 
 ;; NOTE: Stores links that can be called in org files with C-c C-l. It is recommended to have this set to a keybinding, thus it is here. I have yet to use it for anything...
-;; Maybe can be used with pdftools to have a link for notes on a particular point.
 (global-set-key (kbd "C-c l") 'org-store-link)
- 
-;; Org roam config based on suggested config. For note taking.
-;; NOTE: Have not used. Probably want to find a better solution for my note taking needs than the deafult. I think that Prot's "Denote" package might provide a better solution.
-(use-package org-roam
-  :ensure t
-  :custom
-  (org-roam-directory (file-truename "~/Documents/org/"))
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
-         ;; Dailies
-         ("C-c n j" . org-roam-dailies-capture-today))
-  :config
-  ;; If you're using a vertical completion framework, you might want a more informative completion interface
-  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (org-roam-db-autosync-mode))
 
 ;; Editing
 (use-package move-text
@@ -314,17 +218,16 @@ skip exactly those headlines that do not match."
   (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
 
 ;; Modeline customisation
-;; NOTE: Probably want to spend some more time getting this looking good.
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1))
 
 ;; Completion
-(use-package yasnippet
-  :ensure t
-  :config
-  (setq yas-snippet-dirs '("~/.emacs.d/.emacs.snippets/"))
-  (yas-global-mode 1))
+;; (use-package yasnippet
+;;   :ensure t
+;;   :config
+;;   (setq yas-snippet-dirs '("~/.emacs.d/.emacs.snippets/"))
+;;   (yas-global-mode 1))
 
 (use-package company
   :ensure t
@@ -361,20 +264,9 @@ skip exactly those headlines that do not match."
 (global-set-key (kbd "C-z") 'eshell)
 
 ;; Appearance
-
-;; Truncated lines. Trying to force line wrapping.
-;; (set-default 'truncate-lines nil)
-;; (setq truncate-partial-width-windows nil)
-
-;; NOTE: org-mode files prevent changing line truncation settings. This is so that tables are not displayed incorrectly. I am turning this off because I don't use tables yet.
-(add-hook 'org-mode-hook
-      (lambda ()
-        (toggle-truncate-lines nil) ))
-
-(global-display-line-numbers-mode 1)
+(global-set-key (kbd "C-x t l") 'global-display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
 
-;; Theme
 ;; Puts the custom-file in /tmp. This removes the part the is automatically generated by Emacs and placed at the end of the init file. This prevents conflicts with custom and init configuration.
 (setq custom-file (make-temp-file "emacs-custom-"))
 
