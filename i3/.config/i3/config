@@ -203,7 +203,7 @@ exec_always --no-startup-id "~/.config/i3/screenlayout.sh"
 bindsym $mod+shift+p exec "~/.config/i3/screenselect.sh"
 
 # Launching into emacs.
-bindsym $mod+w exec --no-startup-id emacsclient -c
+bindsym $mod+w exec --no-startup-id emacs
 
 # Restart i3 so all changes take effect
 exec --no-startup-id i3-msg restart

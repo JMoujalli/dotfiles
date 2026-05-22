@@ -17,6 +17,7 @@
 (setq make-backup-files nil)
 (setq backup-inhibited nil)
 (setq create-lockfiles nil)
+(setq auto-save-default nil)
 
 ;; Disables the dialog UI elements that pop up.
 (setq use-dialog-box nil)
@@ -38,7 +39,7 @@
   :after elfeed
   :config
   (elfeed-org)
-  (setq rmh-elfeed-org-files (list "~/Documents/Agenda/elfeed.org")))
+  (setq rmh-elfeed-org-files (list "~/Documents/org/elfeed.org")))
 
 (defun mpv-play-url (url &rest args)
   "Play the given URL in MPV."
@@ -103,6 +104,76 @@
 ;; (setq org-latex-pdf-process (quote ("texi2dvi -p -b -V %f")))
 (setq org-latex-pdf-process (list "latexmk -f -pdf %f"))
 
+;; Denote
+(use-package denote
+  :ensure t)
+
+(setq denote-directory "~/Documents/org/")
+
+(setq denote-templates
+      '((biblio . "%^{doi-url}")
+        (plain . nil))
+      citar-denote-template 'biblio)
+
+;; Citar
+(use-package citar
+  :ensure t
+  :bind ("C-c x n" . citar-open))
+
+(setq citar-bibliography "~/Documents/org/Bibliography/global.bib")
+(setq citar-open-always-create-notes nil)
+
+;; Open pdf files with Zathura. This is outside of Emacs because I prefer this.
+(setq citar-file-open-functions
+      '(("pdf" . (lambda (file)
+                   (call-process "zathura" nil 0 nil file)))
+        (t . find-file)))
+
+(global-unset-key (kbd "C-x C-c"))
+
+;; Global bibliography
+;; Will setting the org-cite global bib conflict with the citar bibliography?  
+(setq org-cite-global-bibliography '("~/Documents/org/Bibliography/global.bib"))
+
+;; Citar-denote
+(use-package citar-denote
+  :ensure t
+  :demand t ;; Ensure minor mode loads
+  :after (:any citar denote)
+  :custom
+  ;; Package defaults
+  (citar-denote-file-type 'org)
+  (citar-denote-keyword "bib")
+  (citar-denote-signature nil)
+  (citar-denote-subdir "Bibliography")
+  (citar-denote-title-format "author-year-title")
+  (citar-denote-title-format-andstr "")
+  (citar-denote-title-format-authors 1)
+  (citar-denote-use-bib-keywords nil)
+  :preface
+  (bind-key "C-c x o" #'citar-denote-open-note)
+  :init
+  (citar-denote-mode)
+  ;; Bind all available commands
+  :bind (("C-c x d" . citar-denote-dwim)
+	 ("C-c x e" . citar-denote-open-reference-entry)
+	 ("C-c x a" . citar-denote-add-reference)
+	 ("C-c x k" . citar-denote-remove-citekey)
+	 ("C-c x r" . citar-denote-find-reference)
+	 ("C-c x l" . citar-denote-link-reference)
+	 ("C-c x f" . citar-denote-find-citation)
+	 ("C-c x x" . citar-denote-nocite)
+	 ("C-c x y" . citar-denote-cite-nocite)
+	 ("C-c x z" . citar-denote-nobib)))
+
+(defun open-citar-bibliography ()
+  "Open the bibliography file associated with citar. Useful for creating new bibliography entries."
+  (interactive)
+  (find-file citar-bibliography)
+  (goto-char (point-max))
+  (point)
+  (switch-to-buffer (find-buffer-visiting citar-bibliography)))
+
 ;; Set to "showeverything" to have all headings shown.
 ;; (setq org-startup-folded showeverything)
 
@@ -116,13 +187,47 @@
   (load-file user-init-file))
 (global-set-key (kbd "C-x C-r") 'refresh-init)
 
-(setq org-agenda-files (directory-files-recursively "~/Documents/Agenda/" "\\.org$"))
+(setq org-agenda-files (directory-files-recursively "~/Documents/org/Agenda/" "\\.org$"))
 
 ;; org-capture
 (global-set-key (kbd "C-c c") 'org-capture)
-(setq org-directory "~/Documents/")
-(setq org-default-notes-file "~/Documents/Agenda/refile.org")
+(setq org-directory "~/Documents/org/")
+(setq org-default-notes-file "~/Documents/org/Agenda/refile.org")
 
+;; Capture templates.
+(setq org-capture-templates
+      (quote (("t" "To do" entry (file org-default-notes-file)
+	       "* TODO %?\n%U\n%a\n")
+	      ("m" "Meeting" entry (file org-default-notes-file)
+	       "* MEETING with %? :MEETING:\n%U")
+	      ("r" "Reference" plain (file org-default-notes-file)
+	       ""
+	       :immediate-finish t
+	       :after-finalize open-citar-bibliography)
+	      ("n" "Note" plain (file denote-last-path)
+               (function
+                (lambda ()
+                  (denote-org-capture-with-prompts :title :keywords :subdirectory)))
+               :no-save t
+               :immediate-finish nil
+               :kill-buffer t
+               :jump-to-captured t)
+	      ("j" "Journal" plain
+                 (file denote-last-path)
+                 (function
+                  (lambda ()
+                    ;; The "journal" subdirectory of the `denote-directory'---this must exist!
+                    (let* ((denote-use-directory (expand-file-name "Journal" (denote-directory)))
+                           ;; Use the existing `denote-prompts' as well as the one for a date.
+                           (denote-prompts (denote-add-prompts '(date))))
+                      (denote-org-capture))))
+                 :no-save t
+                 :immediate-finish nil
+                 :kill-buffer t
+                 :jump-to-captured t))))
+
+(setq org-refile-targets (quote ((nil :maxlevel . 9)
+                                 (org-agenda-files :maxlevel . 9))))
 ;; Keywords
 (setq org-use-fast-todo-selection t)
 
@@ -140,16 +245,6 @@
 	      ("CANCELLED" :foreground "dim gray" :weight bold)
 	      ("INACTIVE" :foreground "dim gray" :weight bold)
 	      )))
-
-;; Capture templates.
-(setq org-capture-templates
-      (quote (("t" "todo" entry (file org-default-notes-file)
-	       "* TODO %?\n%U\n%a\n")
-	      ("m" "Meeting" entry (file org-default-notes-file)
-	       "* MEETING with %? :MEETING:\n%U"))))
-
-(setq org-refile-targets (quote ((nil :maxlevel . 9)
-                                 (org-agenda-files :maxlevel . 9))))
 
 ;; Using a more readable, for me, time format. 
 (custom-set-variables
@@ -266,6 +361,15 @@
 ;; Appearance
 (global-set-key (kbd "C-x t l") 'global-display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
+
+;; Truncated lines. Trying to force line wrapping.
+(set-default 'truncate-lines nil)
+(setq truncate-partial-width-windows nil)
+
+;; NOTE: org-mode files prevent changing line truncation settings. This is so that tables are not displayed incorrectly. I am turning this off because I don't use tables yet.
+(add-hook 'org-mode-hook
+      (lambda ()
+        (toggle-truncate-lines nil)))
 
 ;; Puts the custom-file in /tmp. This removes the part the is automatically generated by Emacs and placed at the end of the init file. This prevents conflicts with custom and init configuration.
 (setq custom-file (make-temp-file "emacs-custom-"))
